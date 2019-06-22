@@ -133,6 +133,38 @@ export class InsertMatch extends Component {
         this.setState({ note: event.target.value });
     }
 
+    save = () => {
+
+        var match = {
+            yellowTeamId: this.state.yellowTeam.id,
+            yellowTeam: this.state.yellowTeam,
+            yellowScore: this.state.yellowScore,
+            redTeamId: this.state.redTeam.id,
+            redTeam: this.state.redTeam,
+            redScore: this.state.redScore,
+            note: this.state.note
+        };
+
+        if(!this.validate(match))
+            return;
+
+        fetch('api/Match', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(match)
+        }).then(() => window.location = './');
+    }
+
+    validate = (matchData) =>
+        matchData.yellowTeam &&
+        matchData.redTeam &&
+        (
+            (matchData.redScore === 10 && (matchData.yellowScore || matchData.yellowScore === 0)) ||
+            (matchData.yellowScore === 10 && (matchData.redScore || matchData.redScore === 0))
+        ) &&
+        matchData.redScore !== matchData.yellowScore &&
+        matchData.note;
+
     render() {
         const players = this.state.players;
 
@@ -152,17 +184,7 @@ export class InsertMatch extends Component {
 
         const note = this.state.note;
 
-        const valid =
-            yellowTeam &&
-            redTeam &&
-            (
-                (redScore === 10 && (yellowScore || yellowScore === 0)) ||
-                (yellowScore === 10 && (redScore || redScore === 0))
-            ) &&
-            redScore !== yellowScore &&
-            note;
-
-        const isDisabled = !valid;
+        const isDisabled = !this.validate({yellowTeam, redTeam, yellowScore, redScore, note});
 
         return (
             <div className="insert-match">
@@ -210,7 +232,7 @@ export class InsertMatch extends Component {
                         </div>
                     </div>
                 </div>
-                <button tabIndex="4" disabled={isDisabled}>Save</button>
+                <button tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
             </div>
         );
     }

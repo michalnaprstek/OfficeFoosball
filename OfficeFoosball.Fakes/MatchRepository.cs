@@ -8,8 +8,8 @@ namespace OfficeFoosball.Fakes
     {
         private readonly IList<Match> _matches = new List<Match>
         {
-            new Match{ Id = 1, YellowTeamId = 1, YellowTeamGoalCount = 10, RedTeamId = 2, RedTeamGoalCount = 8, Note = "Test match" },
-            new Match{ Id = 2, YellowTeamId = 1, YellowTeamGoalCount = 8, RedTeamId = 2, RedTeamGoalCount = 10, Note = "Test match 2" },
+            new Match{ Id = 1, YellowTeamId = 1, YellowTeamScore = 10, RedTeamId = 2, RedTeamScore = 8, Note = "Test match" },
+            new Match{ Id = 2, YellowTeamId = 1, YellowTeamScore = 8, RedTeamId = 2, RedTeamScore = 10, Note = "Test match 2" },
         };
 
 

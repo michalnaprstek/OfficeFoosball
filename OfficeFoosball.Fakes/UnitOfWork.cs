@@ -10,5 +10,9 @@ namespace OfficeFoosball.Fakes
         public IMatchRepository Matches { get; } = new MatchRepository();
 
         public ITeamRepository Teams { get; } = new TeamRepository();
+
+        public void Save()
+        {
+        }
     }
 }
