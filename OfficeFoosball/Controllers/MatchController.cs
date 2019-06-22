@@ -17,8 +17,13 @@ namespace OfficeFoosball.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Models.Match> Get()
-            => _unitOfWork.Matches.Get().Select(Mapper.Map);
+        public IEnumerable<Models.MatchListItem> Get()
+        {
+            var teams = _unitOfWork.Teams.Get();
+            var players = _unitOfWork.Players.Get();
+
+            return _unitOfWork.Matches.Get().Select(x => Mapper.Map(x, teams, players));
+        }
 
         [HttpGet("{id}")]
         public Models.Match Get(int id)

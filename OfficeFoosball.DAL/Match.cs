@@ -1,4 +1,6 @@
-﻿namespace OfficeFoosball.DAL
+﻿using System;
+
+namespace OfficeFoosball.DAL
 {
     public class Match
     {
@@ -22,6 +24,7 @@
         public int YellowTeamScore { get; set; }
         public int RedTeamScore { get; set; }
         public string Note { get; set; }
+        public DateTime PlayedOn { get; set; }
         public int WinnerTeamId => YellowTeamScore > RedTeamScore
             ? YellowTeamId
             : RedTeamId;

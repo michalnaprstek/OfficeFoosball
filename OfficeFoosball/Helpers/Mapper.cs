@@ -1,4 +1,10 @@
-﻿namespace OfficeFoosball.Helpers
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using OfficeFoosball.DAL;
+using OfficeFoosball.Models;
+
+namespace OfficeFoosball.Helpers
 {
     public static class Mapper
     {
@@ -10,5 +16,30 @@
             => new Models.Match(match.Id, match.YellowTeamId, match.YellowTeamScore, match.RedTeamId, match.RedTeamScore, match.Note);
         public static DAL.Match Map(Models.Match match)
             => new DAL.Match(match.Id, match.YellowTeamId, match.YellowScore, match.RedTeamId, match.RedScore, match.Note);
+
+        internal static MatchListItem Map(DAL.Match match, IEnumerable<DAL.Team> teams, IEnumerable<DAL.Player> players)
+        {
+            var yellowTeam = teams.Single(x => x.Id == match.YellowTeamId);
+            var yellowTeamDesc = $"{yellowTeam.Name}{Environment.NewLine}({players.Single(x => x.Id == yellowTeam.Player1Id).Name} + {players.Single(x => x.Id == yellowTeam.Player2Id).Name})";
+
+
+            var redTeam = teams.Single(x => x.Id == match.RedTeamId);
+            var redTeamDesc = $"{redTeam.Name}{Environment.NewLine}({players.Single(x => x.Id == redTeam.Player1Id).Name} + {players.Single(x => x.Id == redTeam.Player2Id).Name})";
+
+            var winner = match.WinnerTeamId == match.YellowTeamId
+                ? "yellow"
+                : "red";
+
+            return new MatchListItem(
+                match.Id,
+                yellowTeamDesc,
+                redTeamDesc,
+                match.YellowTeamScore,
+                match.RedTeamScore,
+                winner,
+                match.PlayedOn,
+                match.Note
+                );
+        }
     }
 }
