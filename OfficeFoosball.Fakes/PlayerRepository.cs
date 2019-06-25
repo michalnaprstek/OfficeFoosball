@@ -15,5 +15,10 @@ namespace OfficeFoosball.Fakes
                 new Player{ Id = 69,    Name = "Mr. Kroneisl" },
             };
         }
+
+        public Player CreatePlayer(Player player)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

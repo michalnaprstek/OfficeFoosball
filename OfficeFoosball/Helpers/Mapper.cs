@@ -9,6 +9,9 @@ namespace OfficeFoosball.Helpers
     {
         public static Models.Player Map (DAL.Entities.Player player)
             => new Models.Player(player.Id, player.Name);
+
+        public static DAL.Entities.Player Map(Models.Player player)
+            => new DAL.Entities.Player(player.Name);
         public static Models.Team Map(DAL.Entities.Team team)
             => new Models.Team(team.Id, team.Name, team.Player1Id, team.Player2Id);
         public static Models.Match Map(DAL.Entities.Match match)
