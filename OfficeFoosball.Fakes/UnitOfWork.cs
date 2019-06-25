@@ -1,4 +1,5 @@
 ﻿using OfficeFoosball.DAL;
+using OfficeFoosball.DAL.Repositories;
 
 namespace OfficeFoosball.Fakes
 {

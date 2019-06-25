@@ -1,4 +1,6 @@
-﻿namespace OfficeFoosball.DAL
+﻿using OfficeFoosball.DAL.Repositories;
+
+namespace OfficeFoosball.DAL
 {
     public interface IUnitOfWork
     {

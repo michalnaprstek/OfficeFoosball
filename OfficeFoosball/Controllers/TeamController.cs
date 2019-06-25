@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Helpers;
@@ -17,13 +18,13 @@ namespace OfficeFoosball.Controllers
         }
 
         [HttpGet()]
-        public IEnumerable<Models.Team> Get()
-            => _unitOfWork.Teams.Get()?.Select(Mapper.Map) ?? Enumerable.Empty<Models.Team>();
+        public async Task<IEnumerable<Models.Team>> Get()
+            => (await _unitOfWork.Teams.GetAsync())?.Select(Mapper.Map) ?? Enumerable.Empty<Models.Team>();
 
         [HttpGet("{id}")]
-        public Models.Team Get(int id)
+        public async Task<Models.Team> Get(int id)
         {
-            var team = _unitOfWork.Teams.Get(id);
+            var team = await _unitOfWork.Teams.GetAsync(id);
             return team != null ? Mapper.Map(team) : null;
 
         }

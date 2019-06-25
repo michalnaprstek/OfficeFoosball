@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Helpers;
@@ -17,25 +18,25 @@ namespace OfficeFoosball.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Models.MatchListItem> Get()
+        public async Task<IEnumerable<Models.MatchListItem>> GetAsync()
         {
-            var teams = _unitOfWork.Teams.Get();
-            var players = _unitOfWork.Players.Get();
+            var teams = await _unitOfWork.Teams.GetAsync();
+            var players = await _unitOfWork.Players.GetAsync();
 
-            return _unitOfWork.Matches.Get().Select(x => Mapper.Map(x, teams, players));
+            return (await _unitOfWork.Matches.GetAsync()).Select(x => Mapper.Map(x, teams, players));
         }
 
         [HttpGet("{id}")]
-        public Models.Match Get(int id)
+        public async Task<Models.Match> GetAsync(int id)
         {
-            var match = _unitOfWork.Matches.Get(id);
+            var match = await _unitOfWork.Matches.GetAsync(id);
             return match != null ? Mapper.Map(match) : null;
         }
 
         [HttpPost]
-        public ActionResult Post([FromBody] Models.Match match)
+        public async Task<ActionResult> Post([FromBody] Models.Match match)
         {
-            _unitOfWork.Matches.Update(Mapper.Map(match));
+            await _unitOfWork.Matches.UpdateAsync(Mapper.Map(match));
             _unitOfWork.Save();
             return Ok();
         }

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace OfficeFoosball.DAL
+namespace OfficeFoosball.DAL.Entities
 {
-    public class Match
+    public class Match : Entity
     {
         public Match()
         {
@@ -18,7 +18,6 @@ namespace OfficeFoosball.DAL
             Note = note;
         }
 
-        public int Id { get; set; }
         public int YellowTeamId { get; set; }
         public int RedTeamId { get; set; }
         public int YellowTeamScore { get; set; }
