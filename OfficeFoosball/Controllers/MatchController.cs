@@ -37,7 +37,7 @@ namespace OfficeFoosball.Controllers
         public async Task<ActionResult> Post([FromBody] Models.Match match)
         {
             await _unitOfWork.Matches.UpdateAsync(Mapper.Map(match));
-            _unitOfWork.Save();
+            await _unitOfWork.SaveAsync();
             return Ok();
         }
     }

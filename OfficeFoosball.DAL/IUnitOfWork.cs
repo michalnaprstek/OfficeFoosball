@@ -8,7 +8,6 @@ namespace OfficeFoosball.DAL
         IPlayerRepository Players { get; }
         IMatchRepository Matches { get; }
         ITeamRepository Teams { get; }
-        void Save();
         Task SaveAsync();
     }
 }
