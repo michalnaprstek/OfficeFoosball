@@ -8,9 +8,9 @@ namespace OfficeFoosball.DAL.Entities
         {
         }
 
-        public Match(int id, int yellowTeamId, int redTeamId, int yellowTeamScore, int redTeamScore, string note)
+        public Match(int id, int yellowTeamId, int redTeamId, int yellowTeamScore, int redTeamScore, string note) 
+            : base(id)
         {
-            Id = id;
             YellowTeamId = yellowTeamId;
             RedTeamId = redTeamId;
             YellowTeamScore = yellowTeamScore;

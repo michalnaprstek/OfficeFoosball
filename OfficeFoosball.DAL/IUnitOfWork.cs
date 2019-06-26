@@ -1,4 +1,5 @@
-﻿using OfficeFoosball.DAL.Repositories;
+﻿using System.Threading.Tasks;
+using OfficeFoosball.DAL.Repositories;
 
 namespace OfficeFoosball.DAL
 {
@@ -8,5 +9,6 @@ namespace OfficeFoosball.DAL
         IMatchRepository Matches { get; }
         ITeamRepository Teams { get; }
         void Save();
+        Task SaveAsync();
     }
 }
