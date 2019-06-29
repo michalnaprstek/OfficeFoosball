@@ -20,8 +20,8 @@ export default class MatchList extends Component {
                     <thead>
                         <tr>
                             <th>Yellow team</th>
-                            <th class="score">Yellow score</th>
-                            <th class="score">Red score</th>
+                            <th className="score">Yellow score</th>
+                            <th className="score">Red score</th>
                             <th>Red team</th>
                             <th>Played</th>
                             <th>Note</th>
@@ -35,11 +35,11 @@ export default class MatchList extends Component {
                         return (
                             <tr key={key}>
                                 <td {...yellowClass}>{match.yellowTeam}</td>
-                                <td class="score">{match.yellowScore}</td>
-                                <td class="score">{match.redScore}</td>
+                                <td className="score">{match.yellowScore}</td>
+                                <td className="score">{match.redScore}</td>
                                 <td {...redClass}>{match.redTeam}</td>
                                 <td>{match.played}</td>
-                                <td class="note">{match.note}</td>
+                                <td className="note">{match.note}</td>
                             </tr>
                         ) 
                     }) : ''

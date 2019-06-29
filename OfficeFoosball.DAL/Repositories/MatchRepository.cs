@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OfficeFoosball.DAL.Entities;
 
@@ -18,6 +19,8 @@ namespace OfficeFoosball.DAL.Repositories
             }
             else
             {
+                match.Id = (await DbSet.MaxAsync(x => x.Id))+1;
+                match.PlayedOn = DateTime.Now;
                 await DbSet.AddAsync(match);
             }
         }
