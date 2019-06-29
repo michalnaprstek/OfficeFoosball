@@ -10,10 +10,10 @@ namespace OfficeFoosball.Fakes
     {
         protected IList<T> Data;
 
-        public Task<IReadOnlyList<T>> GetAsync()
+        public virtual Task<IReadOnlyList<T>> GetAsync()
             => Task.FromResult<IReadOnlyList<T>>(Data.ToList());
 
-        public Task<T> GetAsync(int id)
+        public virtual Task<T> GetAsync(int id)
             => Task.FromResult(Data.Single(x => x.Id == id));
     }
 }

@@ -23,7 +23,9 @@ namespace OfficeFoosball.Controllers
             var teams = await _unitOfWork.Teams.GetAsync();
             var players = await _unitOfWork.Players.GetAsync();
 
-            return (await _unitOfWork.Matches.GetAsync()).Select(x => Mapper.Map(x, teams, players));
+            return (await _unitOfWork.Matches.GetAsync())
+                .Select(x => Mapper.Map(x, teams, players))
+                .OrderByDescending(x => x.Played);
         }
 
         [HttpGet("{id}")]

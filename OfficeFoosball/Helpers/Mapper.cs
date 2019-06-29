@@ -15,9 +15,9 @@ namespace OfficeFoosball.Helpers
         public static Models.Team Map(DAL.Entities.Team team)
             => new Models.Team(team.Id, team.Name, team.Player1Id, team.Player2Id);
         public static Models.Match Map(DAL.Entities.Match match)
-            => new Models.Match(match.Id, match.YellowTeamId, match.YellowTeamScore, match.RedTeamId, match.RedTeamScore, match.Note);
+            => new Models.Match(match.Id, match.YellowTeamId, match.RedTeamId, match.YellowTeamScore, match.RedTeamScore, match.Note);
         public static DAL.Entities.Match Map(Models.Match match)
-            => new DAL.Entities.Match(match.Id, match.YellowTeamId, match.YellowScore, match.RedTeamId, match.RedScore, match.Note);
+            => new DAL.Entities.Match(match.Id, match.YellowTeamId, match.RedTeamId, match.YellowScore, match.RedScore, match.Note);
 
         internal static MatchListItem Map(DAL.Entities.Match match, IEnumerable<DAL.Entities.Team> teams, IEnumerable<DAL.Entities.Player> players)
         {
