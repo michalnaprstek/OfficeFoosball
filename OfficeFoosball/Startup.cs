@@ -3,9 +3,9 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using OfficeFoosball.DAL;
+using OfficeFoosball.Extensions;
 
 namespace OfficeFoosball
 {
@@ -23,14 +23,8 @@ namespace OfficeFoosball
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
-            var connectionString = Configuration["ConnectionString"];
-
-            services.AddDbContext<FoosballContext>(
-                builder => builder.UseSqlServer(connectionString, o =>
-                {
-                }), ServiceLifetime.Scoped);
-
-            services.AddScoped<IUnitOfWork, DAL.UnitOfWork>();
+            // data store is driven by configuration. To set development data store (Fake/dev SQL) update it in appsettings.Development.json
+            services.RegisterDal(Configuration);
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
@@ -40,7 +34,7 @@ namespace OfficeFoosball
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, FoosballContext context)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataStoreInitializer dataStoreInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -55,8 +49,7 @@ namespace OfficeFoosball
 
             if (env.IsDevelopment())
             {
-                context.Database.EnsureDeleted();
-                context.Database.EnsureCreated();
+                dataStoreInitializer.Init();
             }
 
             app.UseHttpsRedirection();
