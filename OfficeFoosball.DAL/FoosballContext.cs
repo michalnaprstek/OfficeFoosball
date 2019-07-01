@@ -1,9 +1,10 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using OfficeFoosball.DAL.Entities;
 
 namespace OfficeFoosball.DAL
 {
-    public class FoosballContext : DbContext
+    public class FoosballContext : IdentityDbContext
     {
         public FoosballContext(DbContextOptions options) : base(options)
         {

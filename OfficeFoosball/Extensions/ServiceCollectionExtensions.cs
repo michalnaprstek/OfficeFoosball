@@ -7,18 +7,22 @@ namespace OfficeFoosball.Extensions
     {
         public static IServiceCollection RegisterDal(this IServiceCollection services, IConfiguration configuration)
         {
-            var dataStoreType = configuration.GetValue<DataStoreType>("DataStoreType");
+            if (IsFakeActive(configuration))
+                return Fakes.DataStoreRegistrator.RegisterFake(services);
 
-            switch (dataStoreType)
-            {
-                case DataStoreType.SqlServer:
-                    return DAL.DataStoreRegistrator.RegisterSqlServer(services, configuration["ConnectionString"]);
-
-                case DataStoreType.Fake:
-                     return Fakes.DataStoreRegistrator.RegisterFake(services);
-            }
-            return services;
+            return DAL.DataStoreRegistrator.RegisterSqlServer(services, configuration["ConnectionString"]);
         }
+
+        public static IServiceCollection SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
+        {
+            if(IsFakeActive(configuration))
+                return Fakes.AuthInitializer.Init(services);
+
+            return DAL.AuthInitializer.Init(services, configuration);
+        }
+
+        private static bool IsFakeActive(IConfiguration configuration)
+            => configuration.GetValue<DataStoreType>("DataStoreType") == DataStoreType.Fake;
     }
 
     public enum DataStoreType
