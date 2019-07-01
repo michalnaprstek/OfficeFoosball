@@ -1,0 +1,15 @@
+.score-board {
+    text-align: center;
+
+    &__team-name {
+        display: inline-block;
+        font-size: 1.5rem;
+        margin: 0 1.2rem;
+    }
+    
+    &__score {
+        display: inline-block;
+        font-size: 1.5rem;
+        font-weight: 700;
+    }
+}
