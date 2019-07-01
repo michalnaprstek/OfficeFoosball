@@ -8,14 +8,14 @@
 
         public Player(string name)
         {
-            Name = name;
+            Nick = name;
         }
 
         public Player(int id, string name) : base(id)
         {
-            Name = name;
+            Nick = name;
         }
 
-        public string Name { get; set; }
+        public string Nick { get; set; }
     }
 }

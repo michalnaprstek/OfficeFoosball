@@ -9,10 +9,10 @@ namespace OfficeFoosball.Fakes
         {
             Data = new[]
             {
-                new Player{ Id = 1,     Name = "Janko" },
-                new Player{ Id = 3,     Name = "Michal" },
-                new Player{ Id = 4,     Name = "Kalousek" },
-                new Player{ Id = 69,    Name = "Mr. Kroneisl" },
+                new Player{ Id = 1,     Nick = "Janko" },
+                new Player{ Id = 3,     Nick = "Michal" },
+                new Player{ Id = 4,     Nick = "Kalousek" },
+                new Player{ Id = 69,    Nick = "Mr. Kroneisl" },
             };
         }
 
