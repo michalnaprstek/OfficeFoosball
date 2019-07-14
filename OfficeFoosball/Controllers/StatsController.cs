@@ -24,5 +24,14 @@ namespace OfficeFoosball.Controllers
             var results = stats.Generate();
             return results;
         }
+
+        [HttpGet]
+        [Route("player-success-rates")]
+        public IEnumerable<PlayerSuccessRate> GetPlayersSuccessRatesAsync()
+        {
+            var stats = new PlayerSuccessRateStatistics(_databaseProvider.Get());
+            var results = stats.Generate();
+            return results;
+        }
     }
 }

@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace OfficeFoosball.Statistics
 {
-    public class TeamSuccessRateStatistics
+    public class TeamSuccessRateStatistics : SuccessRateStatistics
     {
         private readonly IFoosballDatabase _db;
 
@@ -16,12 +16,16 @@ namespace OfficeFoosball.Statistics
 
         public TeamSuccessRate[] Generate()
         {
-            var teamStats = _db.Teams.Select(t => new
+            var matches = _db.Matches.ToList();
+
+            var teams = _db.Teams.ToList();
+
+            var teamStats = teams.Select(team => new
             {
-                Team = t,
-                MatchCount = _db.Matches.Where(m => m.TeamRed == t.Id || m.TeamYellow == t.Id).Count(),
-                WinCount = _db.Matches.Where(m => (m.TeamRed == t.Id && m.TeamRedScore > m.TeamYellowScore) || (m.TeamYellow == t.Id && m.TeamYellowScore > m.TeamRedScore)).Count(),
-            }).ToList();
+                Team = team,
+                WinCount = GetTeamWins(matches, team),
+                MatchCount = GetTeamMatches(matches, team),
+            });
 
             return teamStats
                 .Select(x => new TeamSuccessRate
@@ -31,14 +35,6 @@ namespace OfficeFoosball.Statistics
                 })
                 .OrderByDescending(x => x.SuccessPercentage)
                 .ToArray();
-        }
-
-        private double CalculateSuccessPercentage(int totalMatchCount, int winCount)
-        {
-            if (totalMatchCount == 0)
-                return 0;
-
-            return 100 * winCount / (double)totalMatchCount;
         }
 
 
