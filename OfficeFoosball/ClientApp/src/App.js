@@ -5,6 +5,7 @@ import { Home } from './components/Home';
 import { InsertMatch } from './components/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
+import RegisterForm from './components/register-form/RegisterForm';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -16,6 +17,7 @@ export default class App extends Component {
         <Route path='/insert-match' component={InsertMatch} />
         <Route path='/match-detail/:id' component={MatchDetail} />
         <Route path='/login' component={LoginForm} />
+        <Route path='/register' component={RegisterForm} />
       </Layout>
     );
   }
