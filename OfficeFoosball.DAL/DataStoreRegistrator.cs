@@ -14,6 +14,7 @@ namespace OfficeFoosball.DAL
 
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<IDataStoreInitializer, DataStoreInitializer>();
+            services.AddScoped<IDatabaseProvider, DatabaseProvider>();
             return services;
         }
     }
