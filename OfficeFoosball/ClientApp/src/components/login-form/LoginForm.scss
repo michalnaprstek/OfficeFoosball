@@ -1,7 +1,11 @@
-.login-form {
-    display: inline-block;
-    width: 300px;
+.auth {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+  &__form {
+    width: 400px;
     padding: 2rem;
-    margin: 0 auto;
-    //border: 1px solid rgba(0,0,0,0.7);
+  }
 }
