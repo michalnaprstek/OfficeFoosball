@@ -6,6 +6,8 @@ import { InsertMatch } from './components/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';
+import AddPlayer from './components/add-player/AddPlayer';
+import AddTeam from './components/add-team/AddTeam';
 
 export default class App extends Component {
   static displayName = App.name;
@@ -18,6 +20,8 @@ export default class App extends Component {
         <Route path='/match-detail/:id' component={MatchDetail} />
         <Route path='/login' component={LoginForm} />
         <Route path='/register' component={RegisterForm} />
+        <Route path='/add-player' component={AddPlayer} />
+        <Route path='/add-team' component={AddTeam} />
       </Layout>
     );
   }
