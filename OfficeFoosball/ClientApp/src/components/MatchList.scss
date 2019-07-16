@@ -24,11 +24,15 @@
   }
 
   &__note{
-    font-size: 80%;
+    font-size: 120%;
+    font-style: italic;
+    font-weight: lighter;
   }
 
   &__played{
     font-size: 80%;
+    color: rgba(255, 255, 255, 0.4);
+    margin-top: 5px;
   }
 
 }

@@ -17,9 +17,6 @@ export default class ItemSelector extends Component{
         const selectedItem = this.props.selectedItem;
         const selectedItemId = selectedItem ? selectedItem.id : 0;
 
-        console.log(name);
-        console.log(items);
-
         return (
             <div>
                 <label htmlFor={name}>{this.props.label}</label>

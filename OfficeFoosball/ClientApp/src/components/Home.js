@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import MatchList from './MatchList'
-import Axios from 'axios';
+import PlayerStatistics from './player-statistics/PlayerStatistics'
+import TeamStatistics from './team-statistics/TeamStatistics'
+import axiosInstance from '../utils/axiosInstance';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -9,22 +11,32 @@ export class Home extends Component {
     super(props)
     this.state = {
       todayMatches: [],
-      previousDayMatches: []
+      previousDayMatches: [],
+      playerStatistics: [],
+      teamStatistics: []
     }
   }
 
   componentDidMount = () => {
-    Axios.get('api/Match/today')
+    axiosInstance.get('match/today')
       .then(response => response.data)
       .then(data => this.setState({ todayMatches: data }))
-      Axios.get('api/match/previousday')
+      axiosInstance.get('match/previousday')
         .then(response => response.data)
         .then(data => this.setState({ previousDayMatches: data }))
+      axiosInstance.get('stats/team-success-rates')
+          .then(response => response.data)
+          .then(data => this.setState({ teamStatistics: data }))
+          axiosInstance.get('stats/player-success-rates')
+              .then(response => response.data)
+              .then(data => this.setState({ playerStatistics: data }))
   }
 
   render () {
     const todayMatches = this.state.todayMatches;
     const previousDayMatches = this.state.previousDayMatches;
+    const playerStatistics = this.state.playerStatistics;
+    const teamStatistics = this.state.teamStatistics;
 
     return (
       <div>
@@ -32,12 +44,14 @@ export class Home extends Component {
           <div className="col-lg-6">
           <h2>Today Matches</h2>
             <MatchList matches={todayMatches}/>
-          <h2>Previous day matches</h2>
+          <h2>Previous day Matches</h2>
             <MatchList matches={previousDayMatches}/>
           </div>
           <div className="col-lg-6">
             <h2>Top Players</h2>
+              <PlayerStatistics statistics={playerStatistics} />
             <h2>Top Teams</h2>
+              <TeamStatistics statistics={teamStatistics} />
           </div>
         </div>
       </div>
