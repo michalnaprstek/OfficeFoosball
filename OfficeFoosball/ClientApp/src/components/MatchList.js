@@ -1,32 +1,15 @@
 import React, { Component } from "react";
-import { Redirect } from "react-router-dom";
-
+import { withRouter } from 'react-router-dom'
 import "./MatchList.scss";
 
-export default class MatchList extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      matches: [],
-      matchDetailId: null
-    };
-  }
-
-  componentDidMount() {
-    fetch("api/Match")
-      .then(response => response.json())
-      .then(data => this.setState({ matches: data }));
-  }
+class MatchList extends Component {
 
   navigateToMatchDetail = id => {
-    this.setState({ matchDetailId: id });
+    this.props.history.push(`/match-detail/${id}`);
   };
 
   render = () => {
-    const matches = this.state.matches;
-    if (this.state.matchDetailId !== null) {
-      return <Redirect to={"/match-detail/" + this.state.matchDetailId} />;
-    }
+    const matches = this.props.matches;
 
     return (
       <div>
@@ -69,3 +52,5 @@ export default class MatchList extends Component {
     );
   };
 }
+
+export default withRouter(MatchList)
