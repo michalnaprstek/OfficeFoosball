@@ -1,5 +1,36 @@
 .winner {
-  font-weight: bold;
+  color: mediumspringgreen;
+}
+
+.match-list-item{
+  text-align: center;
+  margin: 20px;
+  color: #bbbbbb;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 10px;
+
+  &:hover{
+    background: rgba(255, 255, 255, 0.2);
+  }
+
+  &__team-name{
+    font-size: 120%;
+  }
+  &__team-members{
+    font-size: 80%;
+  }
+  &__score{
+    font-size: 300%;
+  }
+
+  &__note{
+    font-size: 80%;
+  }
+
+  &__played{
+    font-size: 80%;
+  }
+
 }
 
 table {

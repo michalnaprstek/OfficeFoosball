@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import TeamSelector from './TeamSelector'
 import './InsertMatch.css';
 import ScoreInput from './ScoreInput';
+import axiosInstance from '../utils/axiosInstance';
 
 export class InsertMatch extends Component {
 
@@ -9,14 +10,14 @@ export class InsertMatch extends Component {
         super(props);
         this.state = { players: [], teams: [] };
 
-        fetch('api/Player/')
-            .then(response => response.json())
+        axiosInstance.get('Player/')
+            .then(response => response.data)
             .then(data => {
                 this.setState({ players: data });
             });
 
-        fetch('api/Team/')
-            .then(response => response.json())
+        axiosInstance.get('Team/')
+            .then(response => response.data)
             .then(data => {
                 this.setState({ teams: data });
             });
@@ -42,9 +43,9 @@ export class InsertMatch extends Component {
         return mates
     }
 
-    getSecondPlayerId = (team, player) => team.player1Id === player.id
-        ? team.player2Id
-        : team.player1Id;
+    getSecondPlayerId = (team, player) => team.player1.id === player.id
+        ? team.player2.id
+        : team.player1.id;
 
     getSecondPlayer = (team, player, players) => players
         ? players.find(p => p.id === this.getSecondPlayerId(team, player))
@@ -109,8 +110,8 @@ export class InsertMatch extends Component {
     }
 
     teamChange = (team, name) => {
-        const player1 = team ? this.getPlayer(team.player1Id) : null;
-        const player2 = team ? this.getPlayer(team.player2Id) : null;
+        const player1 = team ? this.getPlayer(team.player1.id) : null;
+        const player2 = team ? this.getPlayer(team.player2.id) : null;
         this.setState({
             [name + 'Team']: team,
             [name + 'Player1']: player1,

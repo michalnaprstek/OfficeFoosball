@@ -8,23 +8,38 @@ export class Home extends Component {
   constructor(props){
     super(props)
     this.state = {
-      matches: []
+      todayMatches: [],
+      previousDayMatches: []
     }
   }
 
   componentDidMount = () => {
-    Axios.get('api/Match')
+    Axios.get('api/Match/today')
       .then(response => response.data)
-      .then(data => this.setState({ matches: data }))
+      .then(data => this.setState({ todayMatches: data }))
+      Axios.get('api/match/previousday')
+        .then(response => response.data)
+        .then(data => this.setState({ previousDayMatches: data }))
   }
 
   render () {
-    const matches = this.state.matches;
+    const todayMatches = this.state.todayMatches;
+    const previousDayMatches = this.state.previousDayMatches;
 
     return (
       <div>
-        <h1>Office Foosball League</h1>
-        <MatchList matches={matches}/>
+        <div className="row">
+          <div className="col-lg-6">
+          <h2>Today Matches</h2>
+            <MatchList matches={todayMatches}/>
+          <h2>Previous day matches</h2>
+            <MatchList matches={previousDayMatches}/>
+          </div>
+          <div className="col-lg-6">
+            <h2>Top Players</h2>
+            <h2>Top Teams</h2>
+          </div>
+        </div>
       </div>
     );
   }
