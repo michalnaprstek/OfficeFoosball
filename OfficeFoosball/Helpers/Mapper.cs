@@ -12,8 +12,8 @@ namespace OfficeFoosball.Helpers
 
         public static DAL.Entities.Player Map(Models.Player player)
             => new DAL.Entities.Player(player.Name);
-        public static Models.Team Map(DAL.Entities.Team team)
-            => new Models.Team(team.Id, team.TeamName, team.Player1, team.Player2);
+        public static Models.Team Map(DAL.Entities.Team team, IEnumerable<DAL.Entities.Player> players)
+            => new Models.Team(team.Id, team.TeamName, Map(players.Single(x => x.Id == team.Player1)), Map(players.Single(x => x.Id == team.Player2)));
         public static Models.Match Map(DAL.Entities.Match match)
             => new Models.Match(match.Id, match.TeamYellow, match.TeamRed, match.TeamYellowScore, match.TeamRedScore, match.Note);
         public static DAL.Entities.Match Map(Models.Match match)
@@ -21,12 +21,8 @@ namespace OfficeFoosball.Helpers
 
         internal static MatchListItem Map(DAL.Entities.Match match, IEnumerable<DAL.Entities.Team> teams, IEnumerable<DAL.Entities.Player> players)
         {
-            var yellowTeam = teams.Single(x => x.Id == match.TeamYellow);
-            var yellowTeamDesc = $"{yellowTeam.TeamName}{Environment.NewLine}({players.Single(x => x.Id == yellowTeam.Player1).Nick} + {players.Single(x => x.Id == yellowTeam.Player2).Nick})";
-
-
-            var redTeam = teams.Single(x => x.Id == match.TeamRed);
-            var redTeamDesc = $"{redTeam.TeamName}{Environment.NewLine}({players.Single(x => x.Id == redTeam.Player1).Nick} + {players.Single(x => x.Id == redTeam.Player2).Nick})";
+            var yellowTeam = Map(teams.Single(x => x.Id == match.TeamYellow), players);
+            var redTeam = Map(teams.Single(x => x.Id == match.TeamRed), players);
 
             var winner = match.WinnerTeamId == match.TeamYellow
                 ? "yellow"
@@ -34,8 +30,8 @@ namespace OfficeFoosball.Helpers
 
             return new MatchListItem(
                 match.Id,
-                yellowTeamDesc,
-                redTeamDesc,
+                yellowTeam,
+                redTeam,
                 match.TeamYellowScore,
                 match.TeamRedScore,
                 winner,

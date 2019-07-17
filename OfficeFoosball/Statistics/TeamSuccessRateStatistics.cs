@@ -20,6 +20,8 @@ namespace OfficeFoosball.Statistics
 
             var teams = _db.Teams.ToList();
 
+            var players = _db.Players.ToList();
+
             var teamStats = teams.Select(team => new
             {
                 Team = team,
@@ -30,7 +32,7 @@ namespace OfficeFoosball.Statistics
             return teamStats
                 .Select(x => new TeamSuccessRate
                 {
-                    Team = Mapper.Map(x.Team),
+                    Team = Mapper.Map(x.Team, players),
                     SuccessPercentage = CalculateSuccessPercentage(x.MatchCount, x.WinCount)
                 })
                 .OrderByDescending(x => x.SuccessPercentage)

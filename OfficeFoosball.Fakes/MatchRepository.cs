@@ -25,6 +25,15 @@ namespace OfficeFoosball.Fakes
                 new Match{ Id = 9, TeamYellow = 1, TeamYellowScore = 8, TeamRed = 2, TeamRedScore = 10, Note = "Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Etiam neque. Mauris dolor felis, sagittis at, luctus sed, aliquam non, tellus. Donec vitae arcu. Integer malesuada. Vestibulum fermentum tortor id mi. Fusce nibh. Aliquam erat volutpat. Etiam posuere lacus quis dolor. Integer rutrum, orci vestibulum ullamcorper ultricies, lacus quam ultricies odio, vitae placerat pede sem sit amet enim. Maecenas lorem. Vivamus ac leo pretium faucibus.",  PlayedOn = DateTime.Now.AddDays(-1) },
             };
         }
+
+        public Task<IReadOnlyList<Match>> GetAsync(DateTime date)
+        {
+            var dateWithoutTime = date.Date;
+            return Task.FromResult<IReadOnlyList<Match>>(Data
+                .Where(m => m.PlayedOn >= dateWithoutTime && m.PlayedOn < dateWithoutTime.AddDays(1))
+                .OrderBy(m => m.PlayedOn).ToArray());
+        }
+
         public Task UpdateAsync(Match match)
         {
             if (match.Id != 0)

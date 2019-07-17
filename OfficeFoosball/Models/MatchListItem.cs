@@ -4,7 +4,7 @@ namespace OfficeFoosball.Models
 {
     public class MatchListItem
     {
-        public MatchListItem(int id, string yellowTeam, string redTeam, int yellowScore, int redScore, string winner, DateTime played, string note)
+        public MatchListItem(int id, Team yellowTeam, Team redTeam, int yellowScore, int redScore, string winner, DateTime played, string note)
         {
             Id = id;
             YellowTeam = yellowTeam;
@@ -17,8 +17,8 @@ namespace OfficeFoosball.Models
         }
 
         public int Id { get; set; }
-        public string YellowTeam { get; set; }
-        public string RedTeam { get; set; }
+        public Team YellowTeam { get; set; }
+        public Team RedTeam { get; set; }
         public int YellowScore { get; set; }
         public int RedScore { get; set; }
         public string Winner { get; set; }

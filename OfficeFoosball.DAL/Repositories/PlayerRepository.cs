@@ -1,4 +1,6 @@
-﻿using System.Threading.Tasks;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using OfficeFoosball.DAL.Entities;
 
@@ -15,5 +17,8 @@ namespace OfficeFoosball.DAL.Repositories
             DbSet.Add(player);
             return player;  
         }
+
+        public async Task<IReadOnlyList<Player>> GetAsync(IEnumerable<int> playerIds) 
+            => await DbSet.Where(p => playerIds.Contains(p.Id)).ToListAsync();
     }
 }

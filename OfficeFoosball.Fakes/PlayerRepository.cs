@@ -1,5 +1,8 @@
 ﻿using OfficeFoosball.DAL.Repositories;
 using OfficeFoosball.DAL.Entities;
+using System.Linq;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace OfficeFoosball.Fakes
 {
@@ -20,5 +23,7 @@ namespace OfficeFoosball.Fakes
         {
             throw new System.NotImplementedException();
         }
+        public Task<IReadOnlyList<Player>> GetAsync(IEnumerable<int> playerIds)
+            => Task.FromResult<IReadOnlyList<Player>>(Data.Where(p => playerIds.Contains(p.Id)).ToArray());
     }
 }

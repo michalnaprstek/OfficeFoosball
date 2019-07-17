@@ -14,11 +14,11 @@ namespace OfficeFoosball.DAL.Repositories
             DbSet = dbSet;
         }
 
-        public Task<T> GetAsync(int id)
+        public virtual Task<T> GetAsync(int id)
             => DbSet.FindAsync(id);
 
 
-        public async Task<IReadOnlyList<T>> GetAsync()
+        public async virtual Task<IReadOnlyList<T>> GetAsync()
             => await DbSet.ToListAsync();
     }
 }
