@@ -19,6 +19,11 @@ export default class Auth {
     });
   }
 
+  //TODO: Implement
+  isAuth = () => {
+    return false;
+  }
+
   storeTokens(accessToken, refreshToken) {
     localStorage.setItem("access_token", accessToken);
     localStorage.setItem("refresh_token", refreshToken);
