@@ -6,7 +6,7 @@ import { InsertMatch } from './components/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';
-import './App.css';
+import './App.scss';
 
 export default class App extends Component {
   static displayName = App.name;

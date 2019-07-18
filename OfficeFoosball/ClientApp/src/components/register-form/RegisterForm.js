@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { BrowserRouter as Router, Link } from "react-router-dom";
 
 import "../login-form/LoginForm.scss";
+import Auth from '../../utils/auth/auth';
+
 
 export default class RegisterForm extends Component {
   state = {
@@ -10,7 +12,11 @@ export default class RegisterForm extends Component {
     confirmPassword: "",
     email: ""
   };
-  handleSubmit = () => {};
+  handleSubmit = async event => {
+    event.preventDefault();
+    const auth = new Auth();
+    await auth.register(this.state.username, this.state.email, this.state.password);
+  };
 
   render() {
     return (
@@ -23,7 +29,7 @@ export default class RegisterForm extends Component {
               type="text"
               name="username"
               value={this.state.username}
-              onChange={event => this.setState({ name: event.target.value })}
+              onChange={event => this.setState({ username: event.target.value })}
               placeholder="Username"
             />
           </div>

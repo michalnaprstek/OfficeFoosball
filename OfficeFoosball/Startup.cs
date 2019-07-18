@@ -4,8 +4,10 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SpaServices.ReactDevelopmentServer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Logging;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Extensions;
+using OfficeFoosball.Security;
 
 namespace OfficeFoosball
 {
@@ -21,12 +23,16 @@ namespace OfficeFoosball
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            IdentityModelEventSource.ShowPII = true;
+
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
 
             // data store is driven by configuration. To set development data store (Fake/dev SQL) update it in appsettings.Development.json
             services
                 .RegisterDal(Configuration)
+                .UseSecurity(Configuration)
                 .SetupAuthentication(Configuration);
+
 
             // In production, the React files will be served from this directory
             services.AddSpaStaticFiles(configuration =>
