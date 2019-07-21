@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
-import TeamSelector from './TeamSelector'
+import TeamSelector from '../team-selector/TeamSelector'
 import './InsertMatch.css';
-import ScoreInput from './ScoreInput';
-import axiosInstance from '../utils/axiosInstance';
+import ScoreInput from '../ScoreInput';
+import axiosInstance from '../../utils/axiosInstance';
 
 export class InsertMatch extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { players: [], teams: [] };
+        this.state = { players: [], teams: [], errorMessage: '' };
 
         axiosInstance.get('Player/')
             .then(response => response.data)
@@ -21,6 +21,10 @@ export class InsertMatch extends Component {
             .then(data => {
                 this.setState({ teams: data });
             });
+    }
+
+    displayError(error){
+        this.setState({errorMessage: error.message});
     }
 
     getPlayer = (id) =>
@@ -149,11 +153,12 @@ export class InsertMatch extends Component {
         if(!this.validate(match))
             return;
 
-        fetch('api/Match', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(match)
-        }).then(() => window.location = './');
+        axiosInstance
+            .post('match', match, { headers: { 'Content-Type': 'application/json' }})
+            .then(() => window.location = './')
+            .catch((error) => {
+                this.displayError(error);
+            });
     }
 
     validate = (matchData) =>
@@ -163,8 +168,7 @@ export class InsertMatch extends Component {
             (matchData.redScore === 10 && (matchData.yellowScore || matchData.yellowScore === 0)) ||
             (matchData.yellowScore === 10 && (matchData.redScore || matchData.redScore === 0))
         ) &&
-        matchData.redScore !== matchData.yellowScore &&
-        matchData.note;
+        matchData.redScore !== matchData.yellowScore;
 
     render() {
         const players = this.state.players;
@@ -187,11 +191,12 @@ export class InsertMatch extends Component {
 
         const isDisabled = !this.validate({yellowTeam, redTeam, yellowScore, redScore, note});
 
+        const errorMessage = this.state.errorMessage;
+
         return (
             <div className="insert-match">
-                <h1>Insert Match</h1>
                 <div className="row">
-                    <div className="col-md-6">
+                    <div className="col-lg-3 offset-lg-2 yellow">
                         <TeamSelector
                             teamName="Yellow team"
                             name="yellow"
@@ -208,7 +213,7 @@ export class InsertMatch extends Component {
                         <ScoreInput name='yellow' change={this.scoreChange} value={yellowScore} />
                     </div>
 
-                    <div className="col-md-6">
+                    <div className="col-lg-3 offset-lg-2 red">
                         <TeamSelector
                             teamName="Red team"
                             name="red"
@@ -224,16 +229,17 @@ export class InsertMatch extends Component {
                         <ScoreInput name='red' change={this.scoreChange} value={redScore} />
                     </div>
                 </div>
-                <div className="row">
+                <div className="row justify-content-center">
 
-                    <div className="col-12 note">
+                    <div className="col-lg-8 note">
                         <label htmlFor="note">Note</label>
                         <div>
                             <textarea name="note" tabIndex="3" onChange={this.noteChange} />
                         </div>
                     </div>
                 </div>
-                <button tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
+                <span className="error">{errorMessage}</span>
+                <button className="btn btn-primary" tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
             </div>
         );
     }

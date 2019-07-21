@@ -19,10 +19,12 @@ class MatchList extends Component {
                     match.winner === "yellow" ? 'winner' : '';
                   const redClass =
                     match.winner === "red" ? 'winner' : '';
+                  const note = match.note ? `„${match.note}“` : '';
                   return (
                     <div className="match-list-item"
                       key={key}
-                      onClick={() => this.navigateToMatchDetail(match.id)}>
+                      // onClick={() => this.navigateToMatchDetail(match.id)}
+                      >
                       <div className="match-list-item__team-name row">
                         <div className={`col-6 ${yellowClass}`}>{match.yellowTeam.name}</div>
                         <div className={`col-6 ${redClass}`}>{match.redTeam.name}</div>
@@ -37,7 +39,7 @@ class MatchList extends Component {
                         <div className={`col-6 ${redClass}`}>{match.redScore}</div>
                       </div>
                       <div className="match-list-item__note">
-                      „{match.note}“
+                      {note}
                       </div>
                       <div className="match-list-item__played">
                         {match.played}

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import MatchList from './MatchList'
+import MatchList from './match-list/MatchList'
 import PlayerStatistics from './player-statistics/PlayerStatistics'
 import TeamStatistics from './team-statistics/TeamStatistics'
 import axiosInstance from '../utils/axiosInstance';
