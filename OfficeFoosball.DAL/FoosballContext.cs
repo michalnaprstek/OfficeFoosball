@@ -21,16 +21,16 @@ namespace OfficeFoosball.DAL
             base.OnModelCreating(modelBuilder);
 
             modelBuilder.Entity<Player>()
-                .Property(p => p.Id)
-                .ValueGeneratedNever();
+                .ToTable("Player")
+                .Property(p => p.Id);
 
             modelBuilder.Entity<Team>()
-                .Property(p => p.Id)
-                .ValueGeneratedNever();
+                .ToTable("Team")
+                .Property(p => p.Id);
 
             modelBuilder.Entity<Match>()
-                .Property(p => p.Id)
-                .ValueGeneratedNever();
+                .ToTable("Match")
+                .Property(p => p.Id);
         }
     }
 }

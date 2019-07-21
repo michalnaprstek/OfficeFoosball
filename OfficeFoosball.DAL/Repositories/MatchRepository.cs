@@ -35,7 +35,6 @@ namespace OfficeFoosball.DAL.Repositories
             }
             else
             {
-                match.Id = (await DbSet.MaxAsync(x => x.Id))+1;
                 match.PlayedOn = DateTime.Now;
                 await DbSet.AddAsync(match);
             }
