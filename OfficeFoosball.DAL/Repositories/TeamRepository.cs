@@ -8,5 +8,12 @@ namespace OfficeFoosball.DAL.Repositories
         public TeamRepository(DbSet<Team> dbSet) : base(dbSet)
         {
         }
+
+        public Team CreateTeam(Team team)
+        {
+            DbSet.Add(team);
+
+            return team;
+        }
     }
 }

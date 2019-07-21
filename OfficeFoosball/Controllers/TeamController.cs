@@ -28,5 +28,14 @@ namespace OfficeFoosball.Controllers
             return team != null ? Mapper.Map(team) : null;
 
         }
+
+        [HttpPost]
+        public async Task<IActionResult> PostAsync([FromBody]Models.Team team)
+        {
+            var createdTeam = _unitOfWork.Teams.CreateTeam(Mapper.Map(team));
+            await _unitOfWork.SaveAsync();
+
+            return Ok(createdTeam);
+        }
     }
 }

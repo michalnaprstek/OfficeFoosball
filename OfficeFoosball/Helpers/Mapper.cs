@@ -11,7 +11,9 @@ namespace OfficeFoosball.Helpers
             => new Models.Player(player.Id, player.Nick);
 
         public static DAL.Entities.Player Map(Models.Player player)
-            => new DAL.Entities.Player(player.Name);
+            => new DAL.Entities.Player(player.Id, player.Name);
+        public static DAL.Entities.Team Map(Models.Team team)
+            => new DAL.Entities.Team(team.Name, team.Player1Id, team.Player2Id);
         public static Models.Team Map(DAL.Entities.Team team)
             => new Models.Team(team.Id, team.TeamName, team.Player1, team.Player2);
         public static Models.Match Map(DAL.Entities.Match match)

@@ -15,5 +15,10 @@ namespace OfficeFoosball.Fakes
                 new Team { Id = 3,     TeamName = "void",               Player1 = 3,  Player2 = 1}
             };
         }
+
+        public Team CreateTeam(Team team)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
