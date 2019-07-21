@@ -77,9 +77,7 @@ export default class RegisterForm extends Component {
             <small className="form-text text-muted">
               Do you have an account?
             </small>
-            <Router>
-              <Link to="/login">Log in</Link>
-            </Router>
+            <Link to="/login">Log in</Link>
           </div>
         </form>
       </div>

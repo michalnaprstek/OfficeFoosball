@@ -1,10 +1,13 @@
 import React, { Component } from 'react';
 import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
+
 import './NavMenu.css';
+import Auth from '../utils/auth/auth';
 
 export class NavMenu extends Component {
   static displayName = NavMenu.name;
+  auth = new Auth();
 
   constructor (props) {
     super(props);
@@ -30,9 +33,15 @@ export class NavMenu extends Component {
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
+              {
+                this.auth.isAuth() ?
                 <NavItem>
                   <NavLink tag={Link} to="/insert-match">+ Insert match</NavLink>
+                  <span onClick={this.props.logout}>Logout</span>
                 </NavItem>
+                : 
+                null
+              }
               </ul>
             </Collapse>
           </Container>

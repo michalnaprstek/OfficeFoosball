@@ -1,19 +1,24 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { BrowserRouter as Router, Link } from 'react-router-dom';
 
-import "./LoginForm.scss";
+import './LoginForm.scss';
 import Auth from '../../utils/auth/auth';
 
 export default class LoginForm extends Component {
   state = {
-    username: "",
-    password: ""
+    username: '',
+    password: ''
   };
 
   handleSubmit = async event => {
     event.preventDefault();
     const auth = new Auth();
-    await auth.login(this.state.username, this.state.password);
+    try {
+      await auth.login(this.state.username, this.state.password);
+      this.props.history.push('/');
+    } catch(error) {
+      console.log(error);
+    }
   };
 
   render() {
@@ -27,7 +32,9 @@ export default class LoginForm extends Component {
               type="text"
               name="username"
               value={this.state.username}
-              onChange={event => this.setState({ username: event.target.value })}
+              onChange={event =>
+                this.setState({ username: event.target.value })
+              }
               placeholder="Username"
             />
           </div>
@@ -51,9 +58,7 @@ export default class LoginForm extends Component {
           />
           <div className="d-flex justify-content-between mt-3">
             <small className="form-text text-muted">Not registred?</small>
-            <Router>
               <Link to="/register">Register</Link>
-            </Router>
           </div>
         </form>
       </div>
