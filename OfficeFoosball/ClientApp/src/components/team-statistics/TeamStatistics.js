@@ -8,9 +8,11 @@ export default function TeamStatistics(props) {
         stats.map((s, index) => {
             return (
                 <div className="stats-item row" key={index}>
-                    <div className="stats-item__position col-lg-2"><span>{index+1}</span></div>
-                    <div className="stats-item__percentage col-lg-4">{s.successPercentage.toFixed(1)}%</div>
-                    <div className="stats-item__name col-lg-6">{s.team.name}</div>
+                    <div className="stats-item__position"><span>{index+1}</span></div>
+                    <div className="row stats-item__container">
+                        <div className="stats-item__percentage">{s.successPercentage.toFixed(1)}%</div>
+                        <div className="stats-item__name">{s.team.name}</div>
+                    </div>
                 </div>
             );
         })
