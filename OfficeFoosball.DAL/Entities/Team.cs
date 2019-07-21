@@ -2,7 +2,7 @@
 {
     public class Team : Entity
     {
-        public Team(string teamName, int player1Id, int player2Id)
+        public Team(int id, string teamName, int player1Id, int player2Id) : base(id)
         {
             TeamName = teamName;
             Player1 = player1Id;
