@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.DAL;
+using OfficeFoosball.Extensions;
 using OfficeFoosball.Helpers;
 
 namespace OfficeFoosball.Controllers
@@ -43,7 +44,7 @@ namespace OfficeFoosball.Controllers
         [HttpGet("previousday")]
         public async Task<IEnumerable<Models.MatchListItem>> GetPreviousDayAsync()
         {
-            var day = (DateTime.Today.DayOfWeek == DayOfWeek.Monday) ? DateTime.Today.AddDays(-3) : DateTime.Today.AddDays(-1);
+            var day = DateTime.Today.GetPreviousWorkingDay();
             var teams = await _unitOfWork.Teams.GetAsync();
             var players = await _unitOfWork.Players.GetAsync();
 

@@ -12,7 +12,7 @@ class MatchList extends Component {
     const matches = this.props.matches;
 
     if(!matches || matches.length === 0)
-      return "Žádné zápasy";
+      return "No matches.";
 
        return matches.map((match, key) => {
                   const yellowClass =
