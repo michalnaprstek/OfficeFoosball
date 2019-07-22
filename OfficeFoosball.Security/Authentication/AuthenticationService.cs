@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using OfficeFoosball.DAL;
 using OfficeFoosball.DAL.Entities;
 using OfficeFoosball.Security.Authentication.Token;
 using OfficeFoosball.Security.Token;
@@ -12,11 +13,13 @@ namespace OfficeFoosball.Security.Authentication
     {
         private readonly UserManager<User> _userManager;
         private readonly ITokenService _tokenService;
+        private readonly IUnitOfWork _unitOfWork;
 
-        public AuthenticationService(UserManager<User> userManager, ITokenService tokenService)
+        public AuthenticationService(UserManager<User> userManager, ITokenService tokenService, IUnitOfWork unitOfWork)
         {
             _userManager = userManager;
             _tokenService = tokenService;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<SecurityResult> RegisterAsync(string userName, string email, string password)
@@ -49,6 +52,10 @@ namespace OfficeFoosball.Security.Authentication
                 securityResult.AddErrorMessages(addClaimsResult.Errors.Select(e => e.Description));
             }
 
+            var refreshToken = _tokenService.GenerateRefreshToken();
+            _unitOfWork.Tokens.CreateRefreshToken(refreshToken, user.Id);
+            await _unitOfWork.SaveAsync();
+
             return securityResult;
         }
 
@@ -67,6 +74,12 @@ namespace OfficeFoosball.Security.Authentication
             if (verified == PasswordVerificationResult.Failed)
             {
                 result.AddErrorMessage("Invalid password.");
+                return result;
+            }
+
+            if (!user.IsApproved)
+            {
+                result.AddErrorMessage($"User with username='{user.UserName}' has not been approved by an administrator.");
                 return result;
             }
 

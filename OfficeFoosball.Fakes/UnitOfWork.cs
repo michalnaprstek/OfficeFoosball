@@ -12,6 +12,8 @@ namespace OfficeFoosball.Fakes
 
         public ITeamRepository Teams { get; } = new TeamRepository();
 
+        public ITokenRepository Tokens => throw new System.NotImplementedException("If you need it just implement fake repository.");
+
         public Task SaveAsync()
         {
             return Task.CompletedTask;

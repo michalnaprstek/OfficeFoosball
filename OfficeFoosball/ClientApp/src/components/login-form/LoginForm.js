@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { BrowserRouter as Router, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import './LoginForm.scss';
 import Auth from '../../utils/auth/auth';
@@ -7,7 +7,8 @@ import Auth from '../../utils/auth/auth';
 export default class LoginForm extends Component {
   state = {
     username: '',
-    password: ''
+    password: '',
+    success: true
   };
 
   handleSubmit = async event => {
@@ -17,6 +18,7 @@ export default class LoginForm extends Component {
       await auth.login(this.state.username, this.state.password);
       this.props.history.push('/');
     } catch(error) {
+      this.setState({success : false});
       console.log(error);
     }
   };
@@ -26,6 +28,9 @@ export default class LoginForm extends Component {
       <div className="auth">
         <form className="auth__form" onSubmit={this.handleSubmit}>
           <h4 className="mb-3 text-center">Login to your account</h4>
+          {
+            this.state.success ? null : <div className="auth__error-message">Login failed.</div>
+          }
           <div className="form-group">
             <input
               className="form-control"
@@ -36,6 +41,7 @@ export default class LoginForm extends Component {
                 this.setState({ username: event.target.value })
               }
               placeholder="Username"
+              required
             />
           </div>
           <div className="form-group">
@@ -48,6 +54,7 @@ export default class LoginForm extends Component {
                 this.setState({ password: event.target.value })
               }
               placeholder="Password"
+              required
             />
           </div>
           <input

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Models.Statistics;
 using OfficeFoosball.Statistics;
@@ -16,6 +17,7 @@ namespace OfficeFoosball.Controllers
             _databaseProvider = databaseProvider;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("team-success-rates")]
         public IEnumerable<TeamSuccessRate> GetTeamsSuccessRatesAsync()
@@ -25,6 +27,7 @@ namespace OfficeFoosball.Controllers
             return results;
         }
 
+        [Authorize]
         [HttpGet]
         [Route("player-success-rates")]
         public IEnumerable<PlayerSuccessRate> GetPlayersSuccessRatesAsync()

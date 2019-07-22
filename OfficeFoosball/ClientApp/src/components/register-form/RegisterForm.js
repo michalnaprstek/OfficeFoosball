@@ -10,7 +10,8 @@ export default class RegisterForm extends Component {
     username: "",
     password: "",
     confirmPassword: "",
-    email: ""
+    email: "",
+    success: true
   };
   handleSubmit = async event => {
     event.preventDefault();
@@ -23,6 +24,9 @@ export default class RegisterForm extends Component {
       <div className="auth">
         <form className="auth__form" onSubmit={this.handleSubmit}>
           <h4 className="mb-3 text-center">Register</h4>
+          {
+            this.state.success ? null : <div className="auth__error-message">Register failed. Try it again.</div>
+          }
           <div className="form-group">
             <input
               className="form-control"
@@ -31,6 +35,7 @@ export default class RegisterForm extends Component {
               value={this.state.username}
               onChange={event => this.setState({ username: event.target.value })}
               placeholder="Username"
+              required
             />
           </div>
           <div className="form-group">
@@ -41,6 +46,7 @@ export default class RegisterForm extends Component {
               value={this.state.email}
               onChange={event => this.setState({ email: event.target.value })}
               placeholder="Email"
+              required
             />
           </div>
           <div className="form-group">
@@ -53,6 +59,7 @@ export default class RegisterForm extends Component {
                 this.setState({ password: event.target.value })
               }
               placeholder="Password"
+              required
             />
           </div>
           <div className="form-group">
@@ -65,6 +72,7 @@ export default class RegisterForm extends Component {
                 this.setState({ confirmPassword: event.target.value })
               }
               placeholder="Confirm password"
+              required
             />
           </div>
           <input

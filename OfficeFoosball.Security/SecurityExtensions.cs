@@ -1,7 +1,10 @@
 ﻿using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
+using OfficeFoosball.DAL;
+using OfficeFoosball.DAL.Entities;
 using OfficeFoosball.Security.Authentication;
 using OfficeFoosball.Security.Token;
 using System;
@@ -12,11 +15,13 @@ namespace OfficeFoosball.Security
 {
     public static class SecurityExtensions
     {
-        public static IServiceCollection UseSecurity(this IServiceCollection services, IConfiguration configuration)
+        public static IServiceCollection SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
         {
-            SetupJwtTokenHandler(services, configuration);
             services.AddTransient<IAuthenticationService, AuthenticationService>();
             services.AddTransient<ITokenService, TokenService>();
+
+            SetupIdentity(services);
+            SetupJwtTokenHandler(services, configuration);
 
             return services;
         }
@@ -32,20 +37,39 @@ namespace OfficeFoosball.Security
                     options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
                 })
-                .AddJwtBearer(cfg =>
+                .AddJwtBearer(JwtBearerDefaults.AuthenticationScheme, cfg =>
                 {
                     cfg.RequireHttpsMetadata = false;
                     cfg.SaveToken = true;
                     cfg.TokenValidationParameters = new TokenValidationParameters
                     {
+
                         ValidateIssuerSigningKey = true,
-                        ValidIssuer = configuration["JwtIssuer"],
-                        ValidAudience = configuration["JwtAudience"],
                         IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(configuration["JwtKey"])),
+                        ValidateIssuer = true,
+                        ValidIssuer = configuration["JwtIssuer"],
+                        ValidateAudience = true,
+                        ValidAudience = configuration["JwtAudience"],
                         ValidateLifetime = true,
-                        ClockSkew = TimeSpan.Zero // remove delay of token when expire
+                        ClockSkew = TimeSpan.Zero
                     };
                 });
+        }
+
+        private static void SetupIdentity(IServiceCollection services)
+        {
+            services
+            .AddIdentity<User, IdentityRole>(options =>
+            {
+                options.User.RequireUniqueEmail = true;
+                options.Password.RequireDigit = false;
+                options.Password.RequireLowercase = false;
+                options.Password.RequireUppercase = false;
+                options.Password.RequireNonAlphanumeric = false;
+                options.Password.RequiredLength = 8;
+            })
+            .AddEntityFrameworkStores<FoosballContext>()
+            .AddDefaultTokenProviders();
         }
     }
 }

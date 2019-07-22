@@ -30,7 +30,6 @@ namespace OfficeFoosball
             // data store is driven by configuration. To set development data store (Fake/dev SQL) update it in appsettings.Development.json
             services
                 .RegisterDal(Configuration)
-                .UseSecurity(Configuration)
                 .SetupAuthentication(Configuration);
 
 
@@ -62,6 +61,7 @@ namespace OfficeFoosball
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();
+            app.UseAuthentication();
             app.UseSpaStaticFiles();
 
             app.UseMvc(routes =>
