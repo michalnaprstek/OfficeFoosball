@@ -11,7 +11,7 @@ export default class Auth {
     this.storeTokens(data.accessToken, data.refreshToken);
   };
 
-  register = async(username, email, password) => {
+  register = async (username, email, password) => {
     await axiosInstance.post('auth/register', {
       username,
       email,
@@ -19,9 +19,14 @@ export default class Auth {
     });
   }
 
-  //TODO: Implement
   isAuth = () => {
-    return false;
+    const accessToken = localStorage.getItem('access_token');
+    return accessToken ? true : false;
+  }
+
+  logout = () => {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("refresh_token");
   }
 
   storeTokens(accessToken, refreshToken) {

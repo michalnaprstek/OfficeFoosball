@@ -6,21 +6,23 @@ import { InsertMatch } from './components/insert-match/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';
+import PrivateRoute from './components/PrivateRoute';
 import AddPlayer from './components/add-player/AddPlayer';
 import AddTeam from './components/add-team/AddTeam';
-import './App.scss';
+import Auth from './utils/auth/auth';
 
 export default class App extends Component {
   static displayName = App.name;
+  auth = new Auth();
 
   render () {
     return (
       <Layout>
-        <Route exact path='/' component={Home} />
-        <Route path='/insert-match' component={InsertMatch} />
-        <Route path='/match-detail/:id' component={MatchDetail} />
         <Route path='/login' component={LoginForm} />
         <Route path='/register' component={RegisterForm} />
+        <PrivateRoute exact path='/' component={Home} canActivate={this.auth.isAuth} />
+        <PrivateRoute path='/insert-match' component={InsertMatch} canActivate={this.auth.isAuth} />
+        <PrivateRoute path='/match-detail/:id' component={MatchDetail} canActivate={this.auth.isAuth} />
         <Route path='/add-player' component={AddPlayer} />
         <Route path='/add-team' component={AddTeam} />
       </Layout>

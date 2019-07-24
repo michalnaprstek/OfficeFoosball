@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
+
 import TeamSelector from '../team-selector/TeamSelector'
-import './InsertMatch.css';
+import './InsertMatch.scss';
 import ScoreInput from '../ScoreInput';
 import axiosInstance from '../../utils/axiosInstance';
 

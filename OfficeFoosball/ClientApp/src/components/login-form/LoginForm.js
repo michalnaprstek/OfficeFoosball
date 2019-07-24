@@ -1,19 +1,26 @@
-import React, { Component } from "react";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
-import "./LoginForm.scss";
+import './LoginForm.scss';
 import Auth from '../../utils/auth/auth';
 
 export default class LoginForm extends Component {
   state = {
-    username: "",
-    password: ""
+    username: '',
+    password: '',
+    success: true
   };
 
   handleSubmit = async event => {
     event.preventDefault();
     const auth = new Auth();
-    await auth.login(this.state.username, this.state.password);
+    try {
+      await auth.login(this.state.username, this.state.password);
+      this.props.history.push('/');
+    } catch(error) {
+      this.setState({success : false});
+      console.log(error);
+    }
   };
 
   render() {
@@ -21,14 +28,20 @@ export default class LoginForm extends Component {
       <div className="auth">
         <form className="auth__form" onSubmit={this.handleSubmit}>
           <h4 className="mb-3 text-center">Login to your account</h4>
+          {
+            this.state.success ? null : <div className="auth__error-message">Login failed.</div>
+          }
           <div className="form-group">
             <input
               className="form-control"
               type="text"
               name="username"
               value={this.state.username}
-              onChange={event => this.setState({ username: event.target.value })}
+              onChange={event =>
+                this.setState({ username: event.target.value })
+              }
               placeholder="Username"
+              required
             />
           </div>
           <div className="form-group">
@@ -41,6 +54,7 @@ export default class LoginForm extends Component {
                 this.setState({ password: event.target.value })
               }
               placeholder="Password"
+              required
             />
           </div>
           <input
@@ -51,9 +65,7 @@ export default class LoginForm extends Component {
           />
           <div className="d-flex justify-content-between mt-3">
             <small className="form-text text-muted">Not registred?</small>
-            <Router>
               <Link to="/register">Register</Link>
-            </Router>
           </div>
         </form>
       </div>

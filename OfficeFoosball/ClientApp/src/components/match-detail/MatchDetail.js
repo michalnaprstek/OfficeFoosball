@@ -2,7 +2,6 @@ import React, { Component } from "react";
 import FootballField from "../football-field/FootballField";
 import Scoreboard from "../scoreboard/Scoreboard";
 
-const mockMatch = {};
 
 export default class MatchDetail extends Component {
   render() {

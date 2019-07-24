@@ -15,15 +15,17 @@ namespace OfficeFoosball.DAL
         {
             _dbContext = dbContext;
         }
-        
-        public IPlayerRepository Players 
+
+        public IPlayerRepository Players
             => _playerRepository ?? (_playerRepository = new PlayerRepository(_dbContext.Players));
 
-        public IMatchRepository Matches => 
+        public IMatchRepository Matches =>
             _matchRepository ?? (_matchRepository = new MatchRepository(_dbContext.Matches));
 
-        public ITeamRepository Teams => 
+        public ITeamRepository Teams =>
             _teamRepository ?? (_teamRepository = new TeamRepository(_dbContext.Teams));
+
+        public ITokenRepository Tokens => new TokenRepository(_dbContext.RefreshTokens);
 
         public async Task SaveAsync()
         {

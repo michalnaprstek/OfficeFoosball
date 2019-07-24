@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
+using OfficeFoosball.DAL;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;

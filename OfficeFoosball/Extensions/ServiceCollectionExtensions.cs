@@ -13,14 +13,6 @@ namespace OfficeFoosball.Extensions
             return DAL.DataStoreRegistrator.RegisterSqlServer(services, configuration["ConnectionString"]);
         }
 
-        public static IServiceCollection SetupAuthentication(this IServiceCollection services, IConfiguration configuration)
-        {
-            if(IsFakeActive(configuration))
-                return Fakes.AuthInitializer.Init(services);
-
-            return DAL.AuthInitializer.Init(services, configuration);
-        }
-
         private static bool IsFakeActive(IConfiguration configuration)
             => configuration.GetValue<DataStoreType>("DataStoreType") == DataStoreType.Fake;
     }
