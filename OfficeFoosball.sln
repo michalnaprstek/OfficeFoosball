@@ -9,6 +9,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball.DAL", "Offic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball.Fakes", "OfficeFoosball.Fakes\OfficeFoosball.Fakes.csproj", "{965DF84E-EC0D-48F8-B331-E725E62D408A}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeFoosball.Security", "OfficeFoosball.Security\OfficeFoosball.Security.csproj", "{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -27,6 +29,10 @@ Global
 		{965DF84E-EC0D-48F8-B331-E725E62D408A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{965DF84E-EC0D-48F8-B331-E725E62D408A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{965DF84E-EC0D-48F8-B331-E725E62D408A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

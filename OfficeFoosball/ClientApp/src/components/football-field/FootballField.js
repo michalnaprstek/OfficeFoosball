@@ -9,7 +9,7 @@ export default function FootballField(props) {
   return (
     <section className="field">
       <div className="line-up">
-        <a className="goalkeeper-yellow-team" href="www.seznam.cz">
+        <a className="goalkeeper-yellow-team" href="">
           <img src={profilePicture} alt="profile" />
         </a>
         <a className="striker-yellow-team">

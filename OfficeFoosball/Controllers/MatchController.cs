@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.DAL;
+using OfficeFoosball.Extensions;
 using OfficeFoosball.Helpers;
 
 namespace OfficeFoosball.Controllers
@@ -25,6 +27,28 @@ namespace OfficeFoosball.Controllers
 
             return (await _unitOfWork.Matches.GetAsync())
                 .OrderByDescending(x => x.PlayedOn)
+                .Select(x => Mapper.Map(x, teams, players));
+        }
+
+        [HttpGet("today")]
+        public async Task<IEnumerable<Models.MatchListItem>> GetTodayAsync()
+        {
+            var today = DateTime.Today;
+            var teams = await _unitOfWork.Teams.GetAsync();
+            var players = await _unitOfWork.Players.GetAsync();
+
+            return (await _unitOfWork.Matches.GetAsync(today))
+                .Select(x => Mapper.Map(x, teams, players));
+        }
+
+        [HttpGet("previousday")]
+        public async Task<IEnumerable<Models.MatchListItem>> GetPreviousDayAsync()
+        {
+            var day = DateTime.Today.GetPreviousWorkingDay();
+            var teams = await _unitOfWork.Teams.GetAsync();
+            var players = await _unitOfWork.Players.GetAsync();
+
+            return (await _unitOfWork.Matches.GetAsync(day))
                 .Select(x => Mapper.Map(x, teams, players));
         }
 

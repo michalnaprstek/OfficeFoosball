@@ -19,13 +19,17 @@ namespace OfficeFoosball.Controllers
 
         [HttpGet()]
         public async Task<IEnumerable<Models.Team>> Get()
-            => (await _unitOfWork.Teams.GetAsync())?.Select(Mapper.Map) ?? Enumerable.Empty<Models.Team>();
+        {
+            var players = await _unitOfWork.Players.GetAsync();
+            return (await _unitOfWork.Teams.GetAsync())?.Select(t =>Mapper.Map(t, players)) ?? Enumerable.Empty<Models.Team>();
+        }
 
         [HttpGet("{id}")]
         public async Task<Models.Team> Get(int id)
         {
             var team = await _unitOfWork.Teams.GetAsync(id);
-            return team != null ? Mapper.Map(team) : null;
+            var players = await _unitOfWork.Players.GetAsync(team.PlayerIds);
+            return team != null ? Mapper.Map(team, players) : null;
 
         }
 

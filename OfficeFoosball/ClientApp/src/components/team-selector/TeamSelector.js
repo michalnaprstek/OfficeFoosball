@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import ItemSelector from './ItemSelector'
+import ItemSelector from '../item-selector/ItemSelector'
 
 export default class TeamSelector extends Component {
 

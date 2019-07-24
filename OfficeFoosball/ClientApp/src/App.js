@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 import { Route } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { InsertMatch } from './components/InsertMatch';
+import { InsertMatch } from './components/insert-match/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';
 import AddPlayer from './components/add-player/AddPlayer';
 import AddTeam from './components/add-team/AddTeam';
+import './App.scss';
 
 export default class App extends Component {
   static displayName = App.name;

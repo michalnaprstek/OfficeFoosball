@@ -24,6 +24,7 @@
   <ItemGroup>
     <ProjectReference Include="..\OfficeFoosball.DAL\OfficeFoosball.DAL.csproj" />
     <ProjectReference Include="..\OfficeFoosball.Fakes\OfficeFoosball.Fakes.csproj" />
+    <ProjectReference Include="..\OfficeFoosball.Security\OfficeFoosball.Security.csproj" />
   </ItemGroup>
 
   <Target Name="DebugEnsureNodeEnv" BeforeTargets="Build" Condition=" '$(Configuration)' == 'Debug' And !Exists('$(SpaRoot)node_modules') ">

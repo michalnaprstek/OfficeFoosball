@@ -24,16 +24,16 @@ export class NavMenu extends Component {
   render () {
     return (
       <header>
-        <Navbar className="navbar-expand-sm navbar-toggleable-sm ng-white border-bottom box-shadow mb-3" light>
+        <Navbar className="navbar-expand-sm navbar-toggleable-sm navbar-dark ng-white border-bottom box-shadow mb-3" light>
           <Container>
             <NavbarBrand tag={Link} to="/">OfficeFoosball</NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
               <ul className="navbar-nav flex-grow">
                 <NavItem>
-                    <NavLink tag={Link} className="text-dark" to="/insert-match">+ Insert match</NavLink>
-                    <NavLink tag={Link} className="text-dark" to="/add-player">+ Add player</NavLink>
-                    <NavLink tag={Link} className="text-dark" to="/add-team">+ Add team</NavLink>
+                    <NavLink tag={Link} to="/insert-match">+ Insert match</NavLink>
+                    <NavLink tag={Link} to="/add-player">+ Add player</NavLink>
+                    <NavLink tag={Link} to="/add-team">+ Add team</NavLink>
                 </NavItem>
               </ul>
             </Collapse>
