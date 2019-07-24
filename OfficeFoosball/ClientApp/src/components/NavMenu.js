@@ -42,6 +42,8 @@ export class NavMenu extends Component {
                     <NavLink tag={Link} to="/insert-match">
                       + Insert match
                     </NavLink>
+                    <NavLink tag={Link} to="/add-player">+ Add player</NavLink>
+                    <NavLink tag={Link} to="/add-team">+ Add team</NavLink>
                     <span onClick={this.logout}>Logout</span>
                   </NavItem>
                 ) : null}

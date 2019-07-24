@@ -7,7 +7,8 @@ import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';
 import PrivateRoute from './components/PrivateRoute';
-import './App.scss';
+import AddPlayer from './components/add-player/AddPlayer';
+import AddTeam from './components/add-team/AddTeam';
 import Auth from './utils/auth/auth';
 
 export default class App extends Component {
@@ -22,6 +23,8 @@ export default class App extends Component {
         <PrivateRoute exact path='/' component={Home} canActivate={this.auth.isAuth} />
         <PrivateRoute path='/insert-match' component={InsertMatch} canActivate={this.auth.isAuth} />
         <PrivateRoute path='/match-detail/:id' component={MatchDetail} canActivate={this.auth.isAuth} />
+        <Route path='/add-player' component={AddPlayer} />
+        <Route path='/add-team' component={AddTeam} />
       </Layout>
     );
   }

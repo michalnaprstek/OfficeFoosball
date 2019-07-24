@@ -15,7 +15,7 @@ namespace OfficeFoosball.DAL
 
         public void Init()
         {
-            //_dbContext.Database.EnsureDeleted();
+            _dbContext.Database.EnsureDeleted();
             _dbContext.Database.EnsureCreated();
 
             if(_dbContext.Players.Any())
