@@ -24,8 +24,8 @@ export default class App extends Component {
         <PrivateRoute exact path='/' component={Home} canActivate={this.auth.isAuth} />
         <PrivateRoute path='/insert-match' component={InsertMatch} canActivate={this.auth.isAuth} />
         <PrivateRoute path='/match-detail/:id' component={MatchDetail} canActivate={this.auth.isAuth} />
-        <Route path='/add-player' component={AddPlayer} />
-        <Route path='/add-team' component={AddTeam} />
+        <PrivateRoute path='/add-player' component={AddPlayer} canActivate={this.auth.isAuth} />
+        <PrivateRoute path='/add-team' component={AddTeam} canActivate={this.auth.isAuth} />
       </Layout>
     );
   }

@@ -36,18 +36,28 @@ export class NavMenu extends Component {
             </NavbarBrand>
             <NavbarToggler onClick={this.toggleNavbar} className="mr-2" />
             <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={!this.state.collapsed} navbar>
+            {this.auth.isAuth() ? (
               <ul className="navbar-nav flex-grow">
-                {this.auth.isAuth() ? (
                   <NavItem>
                     <NavLink tag={Link} to="/insert-match">
                       + Insert match
                     </NavLink>
-                    <NavLink tag={Link} to="/add-player">+ Add player</NavLink>
-                    <NavLink tag={Link} to="/add-team">+ Add team</NavLink>
-                    <span onClick={this.logout}>Logout</span>
                   </NavItem>
-                ) : null}
+                  {/* <NavItem>
+                    <NavLink tag={Link} to="/add-player">
+                      + Add player
+                    </NavLink>
+                  </NavItem>
+                  <NavItem>
+                    <NavLink tag={Link} to="/add-team">
+                      + Add team
+                    </NavLink>
+                  </NavItem> */}
+                  <NavItem onClick={() => this.auth.logout()}>
+                      <span class="nav-link">Logout</span>
+                  </NavItem>
               </ul>
+                ) : null}
             </Collapse>
           </Container>
         </Navbar>
