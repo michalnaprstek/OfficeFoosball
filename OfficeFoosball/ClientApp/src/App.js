@@ -10,6 +10,7 @@ import PrivateRoute from './components/PrivateRoute';
 import AddPlayer from './components/add-player/AddPlayer';
 import AddTeam from './components/add-team/AddTeam';
 import Auth from './utils/auth/auth';
+import "./App.scss";
 
 export default class App extends Component {
   static displayName = App.name;

@@ -11,21 +11,34 @@ export default class RegisterForm extends Component {
     password: "",
     confirmPassword: "",
     email: "",
-    success: true
+    success: true,
+    registered: false,
+    errorMessage: ""
   };
   handleSubmit = async event => {
     event.preventDefault();
     const auth = new Auth();
-    await auth.register(this.state.username, this.state.email, this.state.password);
+    const response = await auth.register(this.state.username, this.state.email, this.state.password);
+    if(response.ok){
+      this.setState({ success: true, errorMessage: null, registered: true });
+    }else{
+      this.setState({ success: false, errorMessage: response.errorMessage, registered: false });
+    }
   };
 
   render() {
+    const success = this.state.success;
+    const registered = this.state.registered;
+    const errorMessage = this.state.errorMessage ? this.state.errorMessage : 'Register failed. Try it again.';
     return (
       <div className="auth">
         <form className="auth__form" onSubmit={this.handleSubmit}>
           <h4 className="mb-3 text-center">Register</h4>
           {
-            this.state.success ? null : <div className="auth__error-message">Register failed. Try it again.</div>
+            success ? null : <div className="auth__error-message">{errorMessage}</div>
+          }
+          {
+            success && registered ? <div className="auth__success-message">You've been registered successfully. Contact administrator for account approval.</div> : null
           }
           <div className="form-group">
             <input
@@ -79,7 +92,7 @@ export default class RegisterForm extends Component {
             className="btn btn-primary w-100"
             type="submit"
             name="submitButton"
-            value="Login"
+            value="Register"
           />
           <div className="d-flex justify-content-between mt-3">
             <small className="form-text text-muted">

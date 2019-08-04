@@ -12,11 +12,13 @@ export default class Auth {
   };
 
   register = async (username, email, password) => {
-    await axiosInstance.post('auth/register', {
-      username,
-      email,
-      password
-    });
+      return await axiosInstance.post('auth/register', {
+        username,
+        email,
+        password
+      })
+      .then(_ => { return { ok: true } })
+      .catch(e => { return { ok:false, errorMessage: e.response.data }});
   }
 
   isAuth = () => {
