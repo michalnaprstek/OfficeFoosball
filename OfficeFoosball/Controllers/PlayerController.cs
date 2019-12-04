@@ -21,7 +21,7 @@ namespace OfficeFoosball.Controllers
         [Authorize]
         [HttpGet]
         public async Task<IEnumerable<Models.Player>> GetAsync() 
-            => (await _unitOfWork.Players.GetAsync())?.Select(Mapper.Map) ?? Enumerable.Empty<Models.Player>();
+            => (await _unitOfWork.Players.GetAsync())?.Select(Mapper.Map).OrderBy(p => p.Name) ?? Enumerable.Empty<Models.Player>();
 
 
         [Authorize]
