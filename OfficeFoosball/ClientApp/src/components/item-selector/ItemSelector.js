@@ -1,4 +1,5 @@
 import React, { Component } from 'react'
+import './ItemSelector.scss'
 
 export default class ItemSelector extends Component{
 
@@ -18,9 +19,9 @@ export default class ItemSelector extends Component{
         const selectedItemId = selectedItem ? selectedItem.id : 0;
 
         return (
-            <div>
-                <label htmlFor={name}>{this.props.label}</label>
-                <select name={name} tabIndex="1" onChange={this.change} value={selectedItemId}>
+            <div class="item-selector">
+                {/* <label htmlFor={name}>{this.props.label}</label> */}
+                <select name={name} tabIndex="1" onChange={this.change} value={selectedItemId} placeholder="Player">
                     <option/>
                     {items ? items.map((item, key) => 
                         <option key={key} value={item.id}>{item.name}</option>

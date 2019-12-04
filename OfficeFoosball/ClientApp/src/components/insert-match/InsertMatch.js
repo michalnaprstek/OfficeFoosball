@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 
 import TeamSelector from '../team-selector/TeamSelector'
 import './InsertMatch.scss';
-import ScoreInput from '../ScoreInput';
+import ScoreInput from '../score-input/ScoreInput';
 import axiosInstance from '../../utils/axiosInstance';
 
 export class InsertMatch extends Component {
@@ -196,8 +196,11 @@ export class InsertMatch extends Component {
 
         return (
             <div className="insert-match">
-                <div className="row">
-                    <div className="col-lg-3 offset-lg-2 yellow">
+                <section className="insert-match__teams">
+                    <div className="yellow row insert-match__team">
+                        
+                    <div className="insert-match__team-wrapper">
+                        <label>Yellow team</label>
                         <TeamSelector
                             teamName="Yellow team"
                             name="yellow"
@@ -211,28 +214,32 @@ export class InsertMatch extends Component {
                             onPlayer2Change={this.player2Change}
                             onTeamChange={this.teamChange} />
 
-                        <ScoreInput name='yellow' change={this.scoreChange} value={yellowScore} />
+                            <ScoreInput name='yellow' change={this.scoreChange} value={yellowScore} />
+                        </div>
                     </div>
 
-                    <div className="col-lg-3 offset-lg-2 red">
-                        <TeamSelector
-                            teamName="Red team"
-                            name="red"
-                            possibleTeams={redPossibleTeams}
-                            team={redTeam}
-                            players={players}
-                            player1={redPlayer1}
-                            teamMates={redTeamMates}
-                            player2={redPlayer2}
-                            onPlayer1Change={this.player1Change}
-                            onPlayer2Change={this.player2Change}
-                            onTeamChange={this.teamChange} />
-                        <ScoreInput name='red' change={this.scoreChange} value={redScore} />
+                    <div className="red row insert-match__team">
+                        <div className="insert-match__team-wrapper">
+                            <label>Red team</label>
+                            <TeamSelector
+                                teamName="Red team"
+                                name="red"
+                                possibleTeams={redPossibleTeams}
+                                team={redTeam}
+                                players={players}
+                                player1={redPlayer1}
+                                teamMates={redTeamMates}
+                                player2={redPlayer2}
+                                onPlayer1Change={this.player1Change}
+                                onPlayer2Change={this.player2Change}
+                                onTeamChange={this.teamChange} />
+                            <ScoreInput name='red' change={this.scoreChange} value={redScore} />
+                        </div>
                     </div>
-                </div>
-                <div className="row justify-content-center">
+                </section>
+                <div className="insert-match__note">
 
-                    <div className="col-lg-8 note">
+                    <div className="note">
                         <label htmlFor="note">Note</label>
                         <div>
                             <textarea name="note" tabIndex="3" onChange={this.noteChange} />
@@ -240,7 +247,9 @@ export class InsertMatch extends Component {
                     </div>
                 </div>
                 <span className="error">{errorMessage}</span>
-                <button className="btn btn-primary" tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
+                <section className="insert-match__buttons">
+                    <button className="btn btn-primary " tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
+                </section>
             </div>
         );
     }

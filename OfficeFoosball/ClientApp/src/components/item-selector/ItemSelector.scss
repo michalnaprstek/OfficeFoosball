@@ -1,0 +1,5 @@
+.item-selector { padding: 0 0.2rem 0.2rem 0;
+    @media (max-width: 992px) {
+        input, select { min-width: 1rem !important; width: 100%; } 
+    }
+}

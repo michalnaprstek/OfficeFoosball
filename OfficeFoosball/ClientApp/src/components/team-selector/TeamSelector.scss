@@ -1,0 +1,15 @@
+.team-selector { display: flex;
+    
+    @media (max-width: 992px) { flex-direction: column; width: 75%;
+        .item-selector { width: 100%; }
+    }  
+
+    &__content { display: flex;
+        @media (max-width: 992px) { flex-direction: column;}
+        &-players { display: flex; flex-direction: row; 
+            .item-selector { width: 50%; }
+        }
+    }
+
+
+}

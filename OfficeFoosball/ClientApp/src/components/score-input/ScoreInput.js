@@ -1,4 +1,5 @@
 import React, {Component} from 'react'
+import './ScoreInput.scss'
 
 export default class ScoreInput extends Component{ 
 
@@ -16,10 +17,7 @@ export default class ScoreInput extends Component{
         const value = this.props.value;
 
         return (
-            <div className="score">
-                <h3>Score</h3>
-                <input name={`score-${name}`} type="text" tabIndex="2" onChange={this.change} value={value}/>
-            </div> 
+                <input className="score-input" name={`score-${name}`} type="number" min="0" max="10" tabIndex="2" onChange={this.change} value={value}/>
         );
     }
 
