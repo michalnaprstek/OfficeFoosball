@@ -1,6 +1,6 @@
 .team-selector { display: flex;
     
-    @media (max-width: 992px) { flex-direction: column; width: 75%;
+    @media (max-width: 992px) { flex-direction: column; flex-grow: 2;
         .item-selector { width: 100%; }
     }  
 

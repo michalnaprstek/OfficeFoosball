@@ -5,10 +5,18 @@
     .error {color: red;}
     .yellow { background: rgba(243, 228, 20, 0.295) }
     .red { background: rgba(243, 27, 20, 0.295) }
-    label { width: 8rem; display: block; margin: 0.1rem; } 
-    &__teams{ display: flex; flex-direction: column; align-items: center;}
+    label { display: block; margin: 0.1rem; } 
+    &__teams{ display: flex; flex-direction: column; align-items: center;
+        label{ font-size: 80%; margin-bottom: -2px; }
+    }
     &__team { display: flex; flex-direction: column; width: 100%; padding: 2rem; align-items: center; margin: 0.2rem;
-        &-wrapper{ display: flex; flex-direction: row; }
+        @media (max-width:992px) { padding: 0.5rem; }
+        &-wrapper{ display: flex; flex-direction: row; 
+            @media (max-width:992px) { min-width: 60%; } 
+        }
+        &-name{ width: 8rem; padding-top: 1rem;
+            @media (max-width:992px) { display: none; } 
+        }
     }
     &__buttons { display: flex; flex-direction: row; justify-content: flex-end; }
 }

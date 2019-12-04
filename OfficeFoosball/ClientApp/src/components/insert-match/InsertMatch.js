@@ -200,7 +200,7 @@ export class InsertMatch extends Component {
                     <div className="yellow row insert-match__team">
                         
                     <div className="insert-match__team-wrapper">
-                        <label>Yellow team</label>
+                        <span className="insert-match__team-name">Yellow team</span>
                         <TeamSelector
                             teamName="Yellow team"
                             name="yellow"
@@ -220,7 +220,7 @@ export class InsertMatch extends Component {
 
                     <div className="red row insert-match__team">
                         <div className="insert-match__team-wrapper">
-                            <label>Red team</label>
+                            <span className="insert-match__team-name">Red team</span>
                             <TeamSelector
                                 teamName="Red team"
                                 name="red"

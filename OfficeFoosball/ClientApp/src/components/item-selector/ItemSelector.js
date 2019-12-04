@@ -20,7 +20,7 @@ export default class ItemSelector extends Component{
 
         return (
             <div class="item-selector">
-                {/* <label htmlFor={name}>{this.props.label}</label> */}
+                <label htmlFor={name}>{this.props.label}</label>
                 <select name={name} tabIndex="1" onChange={this.change} value={selectedItemId} placeholder="Player">
                     <option/>
                     {items ? items.map((item, key) => 

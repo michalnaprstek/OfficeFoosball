@@ -17,7 +17,10 @@ export default class ScoreInput extends Component{
         const value = this.props.value;
 
         return (
+            <div>
+                <label for={`score-${name}`}>Score</label>
                 <input className="score-input" name={`score-${name}`} type="number" min="0" max="10" tabIndex="2" onChange={this.change} value={value}/>
+            </div>
         );
     }
 
