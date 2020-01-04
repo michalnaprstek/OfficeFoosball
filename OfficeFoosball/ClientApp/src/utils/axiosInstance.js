@@ -26,6 +26,9 @@ const requestHandler = request => {
 const errorHandler = async (error) =>  {
   const originalRequest = error.config;
   const auth = new Auth();
+  if(!error.response){
+    return Promise.reject(error);
+  }
   if(error.response.status === 401 && originalRequest.url.endsWith('auth/token')){
     auth.logout();
     return Promise.reject(error);
