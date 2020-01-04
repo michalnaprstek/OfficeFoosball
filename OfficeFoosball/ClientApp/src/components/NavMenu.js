@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 
 import './NavMenu.css';
 import Auth from '../utils/auth/auth';
-import { Redirect } from 'react-router-dom';
 
 export class NavMenu extends Component {
   auth = new Auth();
@@ -43,16 +42,16 @@ export class NavMenu extends Component {
                       Insert match
                     </NavLink>
                   </NavItem>
-                  {/* <NavItem>
+                  <NavItem>
                     <NavLink tag={Link} to="/add-player">
-                      + Add player
+                      Add player
                     </NavLink>
                   </NavItem>
                   <NavItem>
                     <NavLink tag={Link} to="/add-team">
-                      + Add team
+                      Add team
                     </NavLink>
-                  </NavItem> */}
+                  </NavItem>
                   <NavItem onClick={() => this.auth.logout()}>
                       <span className="nav-link">Logout</span>
                   </NavItem>
