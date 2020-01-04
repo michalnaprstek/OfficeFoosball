@@ -19,7 +19,7 @@ export default class ItemSelector extends Component{
         const selectedItemId = selectedItem ? selectedItem.id : 0;
 
         return (
-            <div class="item-selector">
+            <div className="item-selector">
                 <label htmlFor={name}>{this.props.label}</label>
                 <select name={name} tabIndex="1" onChange={this.change} value={selectedItemId} placeholder="Player">
                     <option/>

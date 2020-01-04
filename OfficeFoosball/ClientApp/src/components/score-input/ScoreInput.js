@@ -18,7 +18,7 @@ export default class ScoreInput extends Component{
 
         return (
             <div>
-                <label for={`score-${name}`}>Score</label>
+                <label htmlFor={`score-${name}`}>Score</label>
                 <select className="score-input" name={`score-${name}`} tabIndex="2" onChange={this.change} value={value}>
                     <option value="0">0</option>
                     <option value="1">1</option>

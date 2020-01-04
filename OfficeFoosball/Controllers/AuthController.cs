@@ -1,5 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
+﻿using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.Models.Auth;
 using OfficeFoosball.Security.Authentication;
@@ -33,9 +32,16 @@ namespace OfficeFoosball.Controllers
         {
             var loginResult = await _authenticationService.LoginAsync(login.Username, login.Password);
             if (!loginResult.Succeeded)
-                return BadRequest(loginResult.ToString());
+                return Unauthorized(loginResult.ToString());
 
             return Ok(loginResult.Data);
+        }
+
+        [HttpPost("token")]
+        public Task<IActionResult> RefreshTokenAsync([FromBody]TokenRefresh tokenRefresh)
+        {
+            // TODO: implement token refresh
+            return Task.FromResult((IActionResult)Unauthorized());
         }
 
     }

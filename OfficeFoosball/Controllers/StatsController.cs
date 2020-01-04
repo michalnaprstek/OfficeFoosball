@@ -8,6 +8,7 @@ using System.Collections.Generic;
 namespace OfficeFoosball.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class StatsController : ControllerBase
     {
         private readonly IDatabaseProvider _databaseProvider;
@@ -17,7 +18,6 @@ namespace OfficeFoosball.Controllers
             _databaseProvider = databaseProvider;
         }
 
-        [Authorize]
         [HttpGet]
         [Route("team-success-rates")]
         public IEnumerable<TeamSuccessRate> GetTeamsSuccessRatesAsync()
@@ -27,7 +27,6 @@ namespace OfficeFoosball.Controllers
             return results;
         }
 
-        [Authorize]
         [HttpGet]
         [Route("player-success-rates")]
         public IEnumerable<PlayerSuccessRate> GetPlayersSuccessRatesAsync()

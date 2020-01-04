@@ -11,6 +11,7 @@ using OfficeFoosball.Helpers;
 namespace OfficeFoosball.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class MatchController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -20,7 +21,6 @@ namespace OfficeFoosball.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IEnumerable<Models.MatchListItem>> GetAsync()
         {
@@ -32,7 +32,6 @@ namespace OfficeFoosball.Controllers
                 .Select(x => Mapper.Map(x, teams, players));
         }
 
-        [Authorize]
         [HttpGet("today")]
         public async Task<IEnumerable<Models.MatchListItem>> GetTodayAsync()
         {
@@ -44,7 +43,6 @@ namespace OfficeFoosball.Controllers
                 .Select(x => Mapper.Map(x, teams, players));
         }
 
-        [Authorize]
         [HttpGet("previousday")]
         public async Task<IEnumerable<Models.MatchListItem>> GetPreviousDayAsync()
         {
@@ -56,7 +54,6 @@ namespace OfficeFoosball.Controllers
                 .Select(x => Mapper.Map(x, teams, players));
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<Models.Match> GetAsync(int id)
         {
@@ -64,7 +61,6 @@ namespace OfficeFoosball.Controllers
             return match != null ? Mapper.Map(match) : null;
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<ActionResult> Post([FromBody] Models.Match match)
         {
