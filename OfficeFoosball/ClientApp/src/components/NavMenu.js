@@ -40,7 +40,7 @@ export class NavMenu extends Component {
               <ul className="navbar-nav flex-grow">
                   <NavItem>
                     <NavLink tag={Link} to="/insert-match">
-                      + Insert match
+                      Insert match
                     </NavLink>
                   </NavItem>
                   {/* <NavItem>
@@ -54,7 +54,7 @@ export class NavMenu extends Component {
                     </NavLink>
                   </NavItem> */}
                   <NavItem onClick={() => this.auth.logout()}>
-                      <span class="nav-link">Logout</span>
+                      <span className="nav-link">Logout</span>
                   </NavItem>
               </ul>
                 ) : null}

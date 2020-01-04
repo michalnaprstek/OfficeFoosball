@@ -22,7 +22,7 @@ export default class RegisterForm extends Component {
     if(response.ok){
       this.setState({ success: true, errorMessage: null, registered: true });
     }else{
-      this.setState({ success: false, errorMessage: response.errorMessage, registered: false });
+      this.setState({ success: false, errorMessage: response.errorMessage.toString(), registered: false });
     }
   };
 

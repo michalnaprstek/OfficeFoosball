@@ -38,9 +38,9 @@ export default class TeamSelector extends Component {
         const possibleTeams = this.props.possibleTeams;
 
         return (
-            <div class="team-selector">
-                <div class="team-selector__content">
-                    <div class="team-selector__content-players">
+            <div className="team-selector">
+                <div className="team-selector__content">
+                    <div className="team-selector__content-players">
                         <ItemSelector items={players} name={`${name}Player1`} label="Player 1" selectedItem={player1} onChange={this.player1Change} />
                         <ItemSelector items={teamMates} name={`${name}Player2`} label="Player 2" selectedItem={player2} onChange={this.player2Change} />
                     </div>

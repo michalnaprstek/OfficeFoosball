@@ -9,6 +9,7 @@ using OfficeFoosball.Helpers;
 namespace OfficeFoosball.Controllers
 {
     [Route("api/[controller]")]
+    [Authorize]
     public class TeamController : Controller
     {
         private readonly IUnitOfWork _unitOfWork;
@@ -18,7 +19,6 @@ namespace OfficeFoosball.Controllers
             _unitOfWork = unitOfWork;
         }
 
-        [Authorize]
         [HttpGet()]
         public async Task<IEnumerable<Models.Team>> Get()
         {
@@ -26,7 +26,6 @@ namespace OfficeFoosball.Controllers
             return (await _unitOfWork.Teams.GetAsync())?.Select(t =>Mapper.Map(t, players)).OrderBy(t => t.Name) ?? Enumerable.Empty<Models.Team>();
         }
 
-        [Authorize]
         [HttpGet("{id}")]
         public async Task<Models.Team> Get(int id)
         {
@@ -37,6 +36,7 @@ namespace OfficeFoosball.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = Models.Constants.UserRoles.ADMIN)]
         public async Task<IActionResult> PostAsync([FromBody]Models.Team team)
         {
             var createdTeam = _unitOfWork.Teams.CreateTeam(Mapper.Map(team));
