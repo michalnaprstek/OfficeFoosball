@@ -28,7 +28,6 @@ export default class TeamSelector extends Component {
     }
 
     render() {
-        const teamName = this.props.teamName;
         const name = this.props.name;
         const players = this.props.players;
         const player1 = this.props.player1;

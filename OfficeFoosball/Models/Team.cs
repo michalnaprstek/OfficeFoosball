@@ -2,6 +2,7 @@
 {
     public class Team
     {
+
         public Team(int id, string name, Player player1, Player player2)
         {
             Id = id;
@@ -11,7 +12,7 @@
         }
 
         public int Id { get; }
-        public string Name { get; }
+        public string Name { get; set; }
         public Player Player1 { get; }
         public Player Player2 { get; }
         public int[] PlayerIds => new[] { Player1.Id, Player2.Id };

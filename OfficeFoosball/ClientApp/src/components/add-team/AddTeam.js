@@ -1,4 +1,8 @@
 ﻿import React, { Component } from 'react';
+import axiosInstance from '../../utils/axiosInstance';
+import { withRouter } from 'react-router-dom'
+import Select from 'react-select'
+import './AddTeam.scss'
 
 export default class AddTeam extends Component {
     constructor(props) {
@@ -8,55 +12,56 @@ export default class AddTeam extends Component {
             players: [],
             teamName: '',
             teamId: '',
-            player1: {
-                id: '',
-                name: ''
-            },
-            player2: {
-                id: '',
-                name: ''
-            },
-            selectedPlayers: {
-                player1Name: null,
-                player2Name: null
-            }
+            player1Id: undefined,
+            player2Id: undefined,
+            error: ''
         };
-
-        fetch('api/Player/')
-            .then(response => response.json())
-            .then(data => {
-                this.setState({ players: data });
-            });
     }
 
-    validate = (team) =>
-        team.id &&
-        team.name &&
-        team.player1Id &&
-        team.player2Id &&
-        team.player1Id !== team.player2Id
+    componentDidMount = async () => {
+        await this.loadPlayers();
+    }
 
-    submitHandler = (event) => {
+    loadPlayers = async () => {
+        const response = await axiosInstance.get('Player');
+        if(response.status === 200){
+            this.setState({ players: response.data })
+        }
+    }
+
+    validate = (team) => {
+        if(!team.name) return { ok: false, errorMessage: 'Please give us your original team name.'};
+        if(!team.player1Id) return { ok: false, errorMessage: `Please select first player of ${team.name}.`};
+        if(!team.player2Id) return { ok: false, errorMessage: `Did you know that optimal number of players in foosball team is 2? Please select second player of ${team.name}`};
+        return { ok: true };
+    }
+
+    getTeam = () => {
+        return {
+            name: this.state.teamName,
+            player1Id: this.state.player1Id,
+            player2Id: this.state.player2Id
+        };
+    }
+
+    submitHandler = async (event) => {
         event.preventDefault();
 
-        let team = {
-            id: this.state.teamId,
-            name: this.state.teamName,
-            player1Id: this.state.player1.id,
-            player2Id: this.state.player2.id
-        }
+        const team = this.getTeam();
 
-        if (!this.validate(team)) {
-            alert('Data not valid');
-
+        const validationResult = this.validate(team);
+        if (!validationResult.ok) {
+            this.setState({ error: validationResult.errorMessage });
             return;
         }
 
-        fetch('api/Team', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(team)
-        }).then(() => window.location = './');
+        const response = await axiosInstance.post('Team', team, { headers: { 'Content-Type': 'application/json' }});
+        if(response.status === 201){
+            this.props.history.push('/');
+            return;
+        }
+
+        this.setState({ error: response.error })
     }
 
     changeNameHandler = (event) => {
@@ -71,63 +76,66 @@ export default class AddTeam extends Component {
         this.setState({ teamId: event.target.value });
     }
 
-    handleChangePlayer1 = (event) => {
-        let playerName = event.target.value;
-        let playerId = this.state.players.filter(p => p.name === playerName).map(player => player.id)[0];
+    handleChangePlayer1 = (selectedOption) => {
+        const playerId = selectedOption.value;
 
         this.setState({
-            player1: { id: playerId, name: playerName },
-            selectedPlayers: { player1Name: playerName }
+            player1Id: playerId,
         });
     }
 
-    handleChangePlayer2 = (event) => {
-        let playerName = event.target.value;
-        let playerId = this.state.players.filter(p => p.name === playerName).map(player => player.id)[0];
+    handleChangePlayer2 = (selectedOption) => {
+        const playerId = selectedOption.value;
 
         this.setState({
-            player2: { id: playerId, name: playerName },
-            selectedPlayers: { player2Name: playerName }
+            player2Id: playerId,
         });
     }
+
+    getFilteredPlayerOptions = (playerId) => this.state.players
+        .filter(player => player.id !== playerId)
+        .map(player => ({ value: player.id, label: player.name }));
 
     render() {
+        const customStyles = {
+            menu: (provided, state) => ({
+              ...provided,
+              color: '#000000',
+            })
+          }
+
+        const errorMessage = this.state.error;
+        const player1Options = this.getFilteredPlayerOptions(this.state.player2Id);
+        const player2Options = this.getFilteredPlayerOptions(this.state.player1Id);
+
         return (
             <form onSubmit={this.submitHandler}>
                 <h1>Add new team</h1>
-                <label>
-                    Id:
-                <input
+                {errorMessage &&
+                    <div>
+                        <span className="error">{errorMessage}</span>
+                    </div>
+                }
+                <input  className="form-input"
                         type='text'
-                        name='username'
-                        onChange={this.changeIdHandler}
-                    />
-                </label>
-                <br/>
-                <label>
-                    Name:
-                <input
-                        type='text'
-                        name='username'
-                        onChange={this.changeNameHandler}
-                    />
-                </label>
-                <br />
-                <label>
-                    Player 1:
-                    <select value={this.state.selectedPlayers.player1Name} onChange={this.handleChangePlayer1}>
-                        <option value=''></option>
-                        {this.state.players.map((x, y) => <option key={y}>{x.name}</option>)}
-                    </select>
-                </label>
-                <label>
-                    Player 2:
-                    <select value={this.state.selectedPlayers.player2Name} onChange={this.handleChangePlayer2}>
-                        <option value=''></option>
-                        {this.state.players.map((x, y) => <option key={y}>{x.name}</option>)}
-                    </select>
-                </label>
-                <input type='submit' value='Add' />
+                        name='teamname'
+                        placeholder="Team name"
+                        onChange={this.changeNameHandler}/>
+                <Select
+                    onChange={this.handleChangePlayer1}
+                    options={player1Options}
+                    placeholder="Player 1"
+                    className="form-input"
+                    styles={customStyles}
+                />
+                <Select
+                    onChange={this.handleChangePlayer2}
+                    options={player2Options}
+                    placeholder="Player 2"
+                    className="form-input"
+                    styles={customStyles}
+                />
+                <input className="btn btn-primary" type='submit' value='Add' />
             </form>
         );
     }
