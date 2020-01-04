@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Helpers;
 
@@ -36,13 +38,16 @@ namespace OfficeFoosball.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = Models.Constants.UserRoles.ADMIN)]
-        public async Task<IActionResult> PostAsync([FromBody]Models.Team team)
+        public async Task<IActionResult> PostAsync([FromBody]Models.CreateTeam team)
         {
-            var createdTeam = _unitOfWork.Teams.CreateTeam(Mapper.Map(team));
+            if (!TryValidateModel(team))
+                return BadRequest("Team data not valid");
+
+            var mappedTeam = Mapper.Map(team);
+            var createdTeam = _unitOfWork.Teams.CreateTeam(mappedTeam);
             await _unitOfWork.SaveAsync();
 
-            return Ok(createdTeam);
+            return Created($"Team/{createdTeam.Id}", createdTeam);
         }
     }
 }

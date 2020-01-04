@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OfficeFoosball.DAL.Entities;
+using System.Linq;
 
 namespace OfficeFoosball.DAL.Repositories
 {
@@ -12,7 +13,6 @@ namespace OfficeFoosball.DAL.Repositories
         public Team CreateTeam(Team team)
         {
             DbSet.Add(team);
-
             return team;
         }
     }
