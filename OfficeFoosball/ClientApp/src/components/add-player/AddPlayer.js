@@ -1,76 +1,91 @@
 ﻿import React, { Component } from 'react';
+import axiosInstance from '../../utils/axiosInstance';
+//import Select from 'react-select'
 
 export default class AddPlayer extends Component {
     constructor(props) {
         super(props);
 
         this.state = {
-            id: '',
             nick: '',
-            message: ''
+            userId: undefined,
+            message: '',
+            //users: []
         };
 
     }
 
-    validate = (player) =>
-        player.id &&
-        player.nick 
+    componentDidMount = async () => {
+        //await this.loadUsers();
+    }
 
-    submitHandler = (event) => {
+    loadUsers = async () => {
+        const response = axiosInstance.get('User');
+        if(response.status === 200){
+            this.setState({ users: response.data });
+        }
+    }
+
+    validate = (player) => {
+        if(!player.name) return { ok: false, errorMessage: 'Please, let us know name of the lady.' };
+        return { ok: true }
+    }
+
+    getPlayer = () => ({
+        name: this.state.nick,
+        userId: this.state.userId
+    })
+
+    submitHandler = async (event) => {
         event.preventDefault();
 
-        let player = {
-            id: this.state.id,
-            name: this.state.nick
-        }
-
-        if (!this.validate(player)) {
-            alert('Data not valid');
-
+        const player = this.getPlayer();
+        const validationResult = this.validate(player);
+        if (!validationResult.ok) {
+            this.setState({message: validationResult.errorMessage});
             return;
         }
 
-        fetch('api/Player', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(player)
-        }).then(() => window.location = './');
+        var response = await axiosInstance.post('Player', player, {headers: { 'Content-Type': 'application/json' }});
+        if(response.status === 201){
+            this.props.history.push('/');
+            return;
+        }
+
+        this.setState({ error: response.error });
     }
 
     changeNameHandler = (event) => {
         this.setState({ nick: event.target.value });
     }
 
-    changeIdHandler = (event) => {
-        if (isNaN(event.target.value)) {
-            return;
-        }
-
-        this.setState({ id: event.target.value });
+    handleUserChange = (userOption) => {
+        this.setState({ userId: userOption.id});
     }
 
     render() {
+        // const users = this.state.users;
+        // const userOptions = users ? users.map(player => ({ value: player.id, label: player.name })) : [];
+
         return (
             <form onSubmit={this.submitHandler}>
                 <h1>Add new player</h1>
-                <label>
-                    Id:
+                <div>
                 <input
-                        type='text'
-                        name='username'
-                        onChange={this.changeIdHandler}
+                    className="form-input"
+                    type='text'
+                    name='playerName'
+                    placeholder='Name'
+                    onChange={this.changeNameHandler}
                     />
-                </label>
-                <br />
-                <label>
-                    Name:
-                <input
-                        type='text'
-                        name='username'
-                        onChange={this.changeNameHandler}
-                    />
-                </label><br />
-                <input type='submit' value='Add' />
+                </div>
+                {/* <Select 
+                    className="form-input"
+                    options={userOptions}
+                    onChange={this.handleUserChange}
+                    placeholder='Link to user..'
+                     /> */}
+                <input className="btn btn-primary" type='submit' value='Add' />
             </form>
         );
     }

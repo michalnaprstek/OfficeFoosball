@@ -25,13 +25,15 @@ namespace OfficeFoosball.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = Models.Constants.UserRoles.ADMIN)]
-        public async Task<IActionResult> PostAsync([FromBody]Models.Player player)
+        public async Task<IActionResult> PostAsync([FromBody]Models.CreatePlayer player)
         {
+            if (!TryValidateModel(player))
+                return BadRequest("Invalid player data.");
+
             var createdPlayer = _unitOfWork.Players.CreatePlayer(Mapper.Map(player));
             await _unitOfWork.SaveAsync();
 
-            return Ok(createdPlayer);
+            return Created($"Player/{createdPlayer.Id}", createdPlayer);
         }
     }
 }

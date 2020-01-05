@@ -42,7 +42,6 @@ export default class Auth {
     localStorage.removeItem("access_token");
     localStorage.removeItem("refresh_token");
     localStorage.clear();
-    window.location.href = '/';
   }
 
   refreshToken = async () => {

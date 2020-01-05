@@ -66,7 +66,7 @@ namespace OfficeFoosball.Controllers
         {
             await _unitOfWork.Matches.UpdateAsync(Mapper.Map(match));
             await _unitOfWork.SaveAsync();
-            return Ok();
+            return Created($"Match/{match.Id}", match);
         }
     }
 }

@@ -9,7 +9,7 @@ export class InsertMatch extends Component {
 
     constructor(props) {
         super(props);
-        this.state = { players: [], teams: [], errorMessage: '' };
+        this.state = { players: [], teams: [], errorMessage: '', yellowScore: 0, redScore: 0 };
 
         axiosInstance.get('Player/')
             .then(response => response.data)
@@ -24,8 +24,8 @@ export class InsertMatch extends Component {
             });
     }
 
-    displayError(error){
-        this.setState({errorMessage: error.message});
+    displayError(errorMessage){
+        this.setState({errorMessage: errorMessage});
     }
 
     getPlayer = (id) =>
@@ -139,7 +139,7 @@ export class InsertMatch extends Component {
         this.setState({ note: event.target.value });
     }
 
-    save = () => {
+    save = async () => {
 
         var match = {
             yellowTeamId: this.state.yellowTeam.id,
@@ -154,12 +154,15 @@ export class InsertMatch extends Component {
         if(!this.validate(match))
             return;
 
-        axiosInstance
-            .post('match', match, { headers: { 'Content-Type': 'application/json' }})
-            .then(() => window.location = './')
-            .catch((error) => {
-                this.displayError(error);
-            });
+        const response = await axiosInstance
+            .post('match', match, { headers: { 'Content-Type': 'application/json' }});
+
+        if(response.status === 201){
+            this.props.history.push('/');
+            return;
+        }
+
+        this.displayError(response.errorMessage);
     }
 
     validate = (matchData) =>

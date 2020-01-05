@@ -31,10 +31,11 @@ const errorHandler = async (error) =>  {
   }
   if(error.response.status === 401 && originalRequest.url.endsWith('auth/token')){
     auth.logout();
+    goTo('/login');
     return Promise.reject(error);
   }
   if(error.response.status === 403){
-    window.location.href = '/';
+    goTo('/');
     return Promise.reject(error);
   }
   if((error.response.status === 401) && !originalRequest._retry){
@@ -45,9 +46,14 @@ const errorHandler = async (error) =>  {
       return axiosInstance(originalRequest);
     }
     auth.logout();
+    goTo('/login');
     return Promise.reject(error);
   }
   Promise.reject(error);
 };
+
+const goTo = (path) => {
+  window.location.href = path;
+}
 
 export default axiosInstance;

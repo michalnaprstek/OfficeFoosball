@@ -1,8 +1,6 @@
 ﻿import React, { Component } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
-import { withRouter } from 'react-router-dom'
 import Select from 'react-select'
-import './AddTeam.scss'
 
 export default class AddTeam extends Component {
     constructor(props) {

@@ -17,8 +17,10 @@ export default class App extends Component {
   auth = new Auth();
 
   render () {
+    const isAuth = this.auth.isAuth();
+
     return (
-      <Layout>
+      <Layout isAuth={isAuth}>
         <Route path='/login' component={LoginForm} />
         <Route path='/register' component={RegisterForm} />
         <PrivateRoute exact path='/' component={Home} canActivate={this.auth.isAuth} />
