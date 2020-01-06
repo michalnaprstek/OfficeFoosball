@@ -10,8 +10,8 @@ namespace OfficeFoosball.Helpers
         public static Models.Player Map (DAL.Entities.Player player)
             => new Models.Player(player.Id, player.Nick);
 
-        public static DAL.Entities.Player Map(Models.Player player)
-            => new DAL.Entities.Player(player.Id, player.Name);
+        public static DAL.Entities.Player Map(Models.CreatePlayer player)
+            => new DAL.Entities.Player(0, player.Name);
         public static DAL.Entities.Team Map(Models.CreateTeam team)
             => new DAL.Entities.Team(0, team.Name, team.Player1Id.Value, team.Player2Id.Value);
         public static Models.Team Map(DAL.Entities.Team team, IEnumerable<DAL.Entities.Player> players)
@@ -20,6 +20,9 @@ namespace OfficeFoosball.Helpers
             => new Models.Match(match.Id, match.TeamYellow, match.TeamRed, match.TeamYellowScore, match.TeamRedScore, match.Note);
         public static DAL.Entities.Match Map(Models.Match match)
             => new DAL.Entities.Match(match.Id, match.YellowTeamId, match.RedTeamId, match.YellowScore, match.RedScore, match.Note);
+
+        public static Models.User Map(DAL.Entities.User user)
+            => new User { Name = user.UserName, Id = user.Id, Email = user.Email, IsApproved = user.IsApproved };
 
         internal static MatchListItem Map(DAL.Entities.Match match, IEnumerable<DAL.Entities.Team> teams, IEnumerable<DAL.Entities.Player> players)
         {
