@@ -8,6 +8,7 @@ using Microsoft.IdentityModel.Logging;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Extensions;
 using OfficeFoosball.Security;
+using OfficeFoosball.Services.AccessCode;
 
 namespace OfficeFoosball
 {
@@ -26,6 +27,9 @@ namespace OfficeFoosball
             IdentityModelEventSource.ShowPII = true;
 
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+
+            services.AddOptions();
+            services.RegisterAccessCodeService(Configuration);
 
             // data store is driven by configuration. To set development data store (Fake/dev SQL) update it in appsettings.Development.json
             services

@@ -1,10 +1,10 @@
-import axiosInstance from "../axiosInstance";
+import { axiosInstance, axiosWithoutInterceptors } from "../axiosInstance";
 
 export class RefreshTokenResult {
   success;
   accessToken;
-  constructor(success, accessToken){
-    if(success && !accessToken){
+  constructor(success, accessToken) {
+    if (success && !accessToken) {
       throw new Error('Refresh token result require token for success state.');
     }
     this.success = success;
@@ -14,23 +14,24 @@ export class RefreshTokenResult {
 
 export default class Auth {
   login = async (username, password) => {
-    const response = await axiosInstance.post('/auth/login', {
-      username,
-      password
-    });
+    const response = await axiosWithoutInterceptors.post('auth/login', { username: username, password: password },);
 
     const { data } = response;
     this.storeTokens(data.accessToken, data.refreshToken);
   };
 
-  register = async (username, email, password) => {
-      return await axiosInstance.post('auth/register', {
+  register = async (username, email, password, accessCode) => {
+    try {
+      await axiosWithoutInterceptors.post('auth/register', {
         username,
         email,
-        password
-      })
-      .then(_ => { return { ok: true } })
-      .catch(e => { return { ok:false, errorMessage: e }});
+        password,
+        accessCode
+      }, { headers: { 'Content-Type': 'application/json' } });
+      return { ok: true };
+    } catch (error) {
+      return { ok: false, errorMessage: error.response.data };
+    }
   }
 
   isAuth = () => {
@@ -49,7 +50,7 @@ export default class Auth {
       'refreshToken': localStorage.getItem('refresh_token')
     });
 
-    if(refreshResponse.status === 201){
+    if (refreshResponse.status === 201) {
       const { data } = refreshResponse;
       this.storeTokens(data.accessToken, data.refreshToken)
       return new RefreshTokenResult(true, data.accessToken);

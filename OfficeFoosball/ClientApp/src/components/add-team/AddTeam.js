@@ -53,13 +53,15 @@ export default class AddTeam extends Component {
             return;
         }
 
-        const response = await axiosInstance.post('Team', team, { headers: { 'Content-Type': 'application/json' }});
-        if(response.status === 201){
-            this.props.history.push('/');
-            return;
+        try{
+            const response = await axiosInstance.post('Team', team, { headers: { 'Content-Type': 'application/json' }});
+            if(response.status === 201){
+                this.props.history.push('/');
+                return;
+            }
+        } catch(error){
+            this.setState({ error: error.response.data });
         }
-
-        this.setState({ error: response.error })
     }
 
     changeNameHandler = (event) => {

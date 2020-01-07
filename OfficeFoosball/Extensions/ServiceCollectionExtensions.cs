@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OfficeFoosball.Services.AccessCode;
 using System;
 
 namespace OfficeFoosball.Extensions
@@ -24,6 +25,12 @@ namespace OfficeFoosball.Extensions
 
         private static DataStoreType GetDataStoreType(IConfiguration configuration)
             => configuration.GetValue<DataStoreType>("DataStoreType");
+
+        public static void RegisterAccessCodeService(this IServiceCollection services, IConfiguration configuration)
+        {
+            services.Configure<AccessCodeSettings>(configuration.GetSection("AccessCode"));
+            services.AddTransient<IAccessCodeService, AccessCodeService>();
+        }
     }
 
     public enum DataStoreType

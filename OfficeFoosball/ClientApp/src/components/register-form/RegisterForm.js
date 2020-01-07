@@ -11,24 +11,27 @@ export default class RegisterForm extends Component {
     password: "",
     confirmPassword: "",
     email: "",
+    accessCode: null,
     success: true,
-    registered: false,
     errorMessage: ""
   };
   handleSubmit = async event => {
     event.preventDefault();
     const auth = new Auth();
-    const response = await auth.register(this.state.username, this.state.email, this.state.password);
-    if(response.ok){
-      this.setState({ success: true, errorMessage: null, registered: true });
-    }else{
-      this.setState({ success: false, errorMessage: response.errorMessage.toString(), registered: false });
+    try {
+      const response = await auth.register(this.state.username, this.state.email, this.state.password, this.state.accessCode);
+      if (response.ok) {
+        this.props.history.push('/');
+      } else {
+        this.setState({ success: false, errorMessage: response.errorMessage });
+      }
+    } catch (error) {
+      this.setState({ success: false, errorMessage: error });
     }
   };
 
   render() {
     const success = this.state.success;
-    const registered = this.state.registered;
     const errorMessage = this.state.errorMessage ? this.state.errorMessage : 'Register failed. Try it again.';
     return (
       <div className="auth">
@@ -36,9 +39,6 @@ export default class RegisterForm extends Component {
           <h4 className="mb-3 text-center">Register</h4>
           {
             success ? null : <div className="auth__error-message">{errorMessage}</div>
-          }
-          {
-            success && registered ? <div className="auth__success-message">You've been registered successfully. Contact administrator for account approval.</div> : null
           }
           <div className="form-group">
             <input
@@ -85,6 +85,19 @@ export default class RegisterForm extends Component {
                 this.setState({ confirmPassword: event.target.value })
               }
               placeholder="Confirm password"
+              required
+            />
+          </div>
+          <div className="form-group">
+            <input
+              className="form-control"
+              type="text"
+              name="accessCode"
+              value={this.state.accessCode}
+              onChange={event =>
+                this.setState({ accessCode: event.target.value })
+              }
+              placeholder="Acceess code"
               required
             />
           </div>

@@ -30,7 +30,7 @@ namespace OfficeFoosball.Security.Authentication
             {
                 UserName = userName,
                 Email = email,
-                IsApproved = false
+                IsApproved = true
             };
 
             var createUserResult = await _userManager.CreateAsync(user, password);

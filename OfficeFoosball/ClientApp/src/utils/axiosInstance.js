@@ -1,8 +1,17 @@
 import axios from 'axios';
 import Auth from './auth/auth';
 
+
+export const axiosWithoutInterceptors = axios.create({
+  baseURL: 'api',
+  timeout: 5000,
+  headers: {
+    contentType: 'application/json'
+  }
+});
+
 //TODO: Move const to enviroment variables
-const axiosInstance = axios.create({
+export const axiosInstance = axios.create({
   baseURL: 'api',
   timeout: 5000,
   headers: {
@@ -13,7 +22,8 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(request => requestHandler(request));
 axiosInstance.interceptors.response.use(
   response => response,
-  error => errorHandler(error));
+  error => errorHandler(error)
+  );
 
 const requestHandler = request => {
   const accessToken = new Auth().getToken();
@@ -27,16 +37,16 @@ const errorHandler = async (error) =>  {
   const originalRequest = error.config;
   const auth = new Auth();
   if(!error.response){
-    return Promise.reject(error);
+    throw error;
   }
   if(error.response.status === 401 && originalRequest.url.endsWith('auth/token')){
     auth.logout();
     goTo('/login');
-    return Promise.reject(error);
+    throw error;
   }
   if(error.response.status === 403){
     goTo('/');
-    return Promise.reject(error);
+    return;
   }
   if((error.response.status === 401) && !originalRequest._retry){
     originalRequest._retry = true;
@@ -47,9 +57,9 @@ const errorHandler = async (error) =>  {
     }
     auth.logout();
     goTo('/login');
-    return Promise.reject(error);
+    throw error;
   }
-  Promise.reject(error);
+  throw error;
 };
 
 const goTo = (path) => {
