@@ -45,6 +45,15 @@ export default class Auth {
     localStorage.clear();
   }
 
+  getAccessCode = async () => {
+    try{
+      const response = await axiosInstance.get('auth/access-code');
+      return response.data;
+    } catch (error){
+      console.error(`Loading access code failed: ${error.response.data}`);
+    }
+  }
+
   refreshToken = async () => {
     const refreshResponse = await axiosInstance.post('auth/token', {
       'refreshToken': localStorage.getItem('refresh_token')

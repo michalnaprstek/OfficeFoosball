@@ -5,5 +5,6 @@ namespace OfficeFoosball.Services.AccessCode
     public interface IAccessCodeService
     {
         Task<bool> CheckAccessCodeAsync(string accessCode);
+        Task<string> GetAccessCodeAsync();
     }
 }

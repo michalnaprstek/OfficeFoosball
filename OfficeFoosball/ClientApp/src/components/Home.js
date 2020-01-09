@@ -3,6 +3,7 @@ import MatchList from './match-list/MatchList'
 import PlayerStatistics from './player-statistics/PlayerStatistics'
 import TeamStatistics from './team-statistics/TeamStatistics'
 import axiosInstance from '../utils/axiosInstance';
+import BottomPanel from './bottom-panel/BottomPanel';
 
 export class Home extends Component {
   static displayName = Home.name;
@@ -21,15 +22,18 @@ export class Home extends Component {
     axiosInstance.get('match/today')
       .then(response => response.data)
       .then(data => this.setState({ todayMatches: data }))
-      axiosInstance.get('match/previousday')
-        .then(response => response.data)
-        .then(data => this.setState({ previousDayMatches: data }))
-      axiosInstance.get('stats/team-success-rates')
-          .then(response => response.data)
-          .then(data => this.setState({ teamStatistics: data }))
-          axiosInstance.get('stats/player-success-rates')
-              .then(response => response.data)
-              .then(data => this.setState({ playerStatistics: data }))
+    axiosInstance.get('match/previousday')
+      .then(response => response.data)
+      .then(data => this.setState({ previousDayMatches: data }))
+    axiosInstance.get('stats/team-success-rates')
+      .then(response => response.data)
+      .then(data => this.setState({ teamStatistics: data }))
+    axiosInstance.get('stats/player-success-rates')
+      .then(response => response.data)
+      .then(data => this.setState({ playerStatistics: data }))
+    axiosInstance.get('auth/access-code')
+      .then(response => response.data)
+      .then(data => this.setState({ accessCode: data }))
   }
 
   render () {
@@ -37,6 +41,7 @@ export class Home extends Component {
     const previousDayMatches = this.state.previousDayMatches;
     const playerStatistics = this.state.playerStatistics;
     const teamStatistics = this.state.teamStatistics;
+    const accessCode = this.state.accessCode;
 
     return (
       <div>
@@ -54,6 +59,7 @@ export class Home extends Component {
               <TeamStatistics statistics={teamStatistics} />
           </div>
         </div>
+        <BottomPanel accessCode={accessCode} />
       </div>
     );
   }

@@ -13,5 +13,8 @@ namespace OfficeFoosball.Services.AccessCode
 
         public Task<bool> CheckAccessCodeAsync(string accessCode) 
             => Task.FromResult(accessCode == _accessCode);
+
+        public Task<string> GetAccessCodeAsync()
+            => Task.FromResult(_accessCode);
     }
 }

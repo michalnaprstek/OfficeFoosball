@@ -1,0 +1,7 @@
+.access-code{
+    &__code { color: #FFFFFF }
+    &__copy-button { background: transparent; color: inherit; margin: 0 0.5rem; border: 1px solid rgba(255, 255, 255, 0.3); cursor: pointer; border-radius: 0.25rem;
+        &:hover{ border: 1px solid rgba(255, 255, 255, 0.5); background: rgba(255, 255, 255, 0.1); }
+    }
+    &__copy-icon{ color: rgb(37, 247, 9) }
+}

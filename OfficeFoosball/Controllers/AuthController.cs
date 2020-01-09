@@ -1,5 +1,6 @@
 ﻿using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using OfficeFoosball.Models.Auth;
 using OfficeFoosball.Security.Authentication;
@@ -34,7 +35,7 @@ namespace OfficeFoosball.Controllers
             }
             if (!(await _accessCodeService.CheckAccessCodeAsync(register.AccessCode)))
             {
-                return BadRequest("Invalid access code. Please ask some of the existing users.");
+                return BadRequest("Invalid access code. Please ask someone who already has an account for it.");
             }
             var registerResult = await _authenticationService.RegisterAsync(register.Username, register.Email, register.Password);
             if (!registerResult.Succeeded)
@@ -61,5 +62,9 @@ namespace OfficeFoosball.Controllers
             return Task.FromResult((IActionResult)Unauthorized());
         }
 
+        [HttpGet("access-code")]
+        [Authorize]
+        public Task<string> GetAccessCode() 
+            => _accessCodeService.GetAccessCodeAsync();
     }
 }
