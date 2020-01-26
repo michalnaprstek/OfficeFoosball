@@ -4,5 +4,6 @@
     {
         public Team Team { get; set; }
         public double SuccessPercentage { get; set; }
+        public int TotalMatchCount { get; set; }
     }
 }
