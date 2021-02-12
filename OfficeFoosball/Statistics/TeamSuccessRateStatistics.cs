@@ -33,7 +33,8 @@ namespace OfficeFoosball.Statistics
                 .Select(x => new TeamSuccessRate
                 {
                     Team = Mapper.Map(x.Team, players),
-                    SuccessPercentage = CalculateSuccessPercentage(x.MatchCount, x.WinCount)
+                    SuccessPercentage = CalculateSuccessPercentage(x.MatchCount, x.WinCount),
+                    TotalMatchCount = x.MatchCount
                 })
                 .OrderByDescending(x => x.SuccessPercentage)
                 .ToArray();
