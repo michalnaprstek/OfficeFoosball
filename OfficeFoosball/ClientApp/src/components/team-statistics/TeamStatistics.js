@@ -14,10 +14,12 @@ export default function TeamStatistics(props) {
               <div className='stats-item__name'>{s.team.name}</div>
               <div className='stats-item__player-names'>{s.team.player1.name}, {s.team.player2.name}</div>
             </div>
-            <div className='stats-item__percentage'>{s.successPercentage.toFixed(1)}%</div>
+            <div className='stats-item__percentage' ><span className={percentageClassification(s.successPercentage)}>{s.successPercentage.toFixed(1)}%</span> | {s.totalMatchCount}</div>
           </div>
         </div>
       );
     })
   );
 }
+
+export const percentageClassification = (percentage) => percentage >= 50 ? 'good' : 'bad';

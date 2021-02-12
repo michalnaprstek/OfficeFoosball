@@ -16,9 +16,9 @@ class MatchList extends Component {
 
        return matches.map((match, key) => {
                   const yellowClass =
-                    match.winner === "yellow" ? 'winner' : '';
+                    match.winner === "yellow" ? 'winner' : 'looser';
                   const redClass =
-                    match.winner === "red" ? 'winner' : '';
+                    match.winner === "red" ? 'winner' : 'looser';
                   const note = match.note ? `„${match.note}“` : '';
                   return (
                     <div className="match-list-item"

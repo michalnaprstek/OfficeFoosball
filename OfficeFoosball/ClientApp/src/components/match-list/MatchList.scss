@@ -1,17 +1,15 @@
 .winner {
-  color: mediumspringgreen;
+  color: forestgreen;
+}
+.looser {
+  color: indianred;
 }
 
 .match-list-item{
   text-align: center;
-  color: #bbbbbb;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   padding: 10px;
   margin-bottom: 10px;
-
-  &:hover{
-    background: rgba(255, 255, 255, 0.2);
-  }
 
   &__team-name{
     font-size: 120%;
@@ -31,7 +29,7 @@
 
   &__played{
     font-size: 80%;
-    color: rgba(255, 255, 255, 0.4);
+    color: rgba(0,0,0, 0.4);
     margin-top: 5px;
   }
 

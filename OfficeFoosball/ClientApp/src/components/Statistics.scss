@@ -1,5 +1,9 @@
 $positionIconSize: 35px;
 
+.bad { color: indianred }
+
+.good { color: forestgreen }
+
 .stats-item{
   background: rgba(0, 0, 0, 0.1);
   margin: 10px 0;
@@ -17,8 +21,7 @@ $positionIconSize: 35px;
         color: #ffffff;
         width: $positionIconSize;
         height: $positionIconSize;
-        background: #007bff;
-        opacity: 80%;
+        background: #729096;
         border-radius: 5px;
         display: block;
         font-weight: bold;
