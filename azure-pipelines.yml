@@ -22,7 +22,8 @@ steps:
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: 'dotnet build $(buildConfiguration)'
 
-- task: PublishPipelineArtifact@1
+- task: PublishBuildArtifacts@1
   inputs:
-    path: $(build.artifactStagingDirectory)\WebApp.zip
-    artifact: WebApp
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+    ArtifactName: 'WebApp'
+    publishLocation: 'Container'
