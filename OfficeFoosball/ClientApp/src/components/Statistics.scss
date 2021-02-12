@@ -1,8 +1,7 @@
 $positionIconSize: 35px;
 
 .stats-item{
-  color: #bbbbbb;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(0, 0, 0, 0.1);
   margin: 10px 0;
 
   .row{
@@ -15,9 +14,11 @@ $positionIconSize: 35px;
   &__position {
     margin-right: 20px;
       span{
+        color: #ffffff;
         width: $positionIconSize;
         height: $positionIconSize;
-        background: rgba(255, 255, 255, 0.3);
+        background: #007bff;
+        opacity: 80%;
         border-radius: 5px;
         display: block;
         font-weight: bold;
@@ -34,13 +35,25 @@ $positionIconSize: 35px;
   &__percentage{
     text-align: right;
     font-size: 30px;
+    font-weight: 100;
     z-index: -1;
   }
 
+  &__names{
+    text-align: left;
+    flex-grow: 2;
+  }
+
   &__name{
-      text-align: left;
-      flex-grow: 2;
-      font-size: 120%;
+    text-align: left;
+    flex-grow: 2;
+    font-size: 120%;
+  }
+
+  &__player-names{
+    text-align: left;
+    flex-grow: 2;
+    font-size: 80%;
   }
 }
 
