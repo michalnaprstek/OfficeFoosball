@@ -37,6 +37,7 @@ export class Home extends Component {
     const previousDayMatches = this.state.previousDayMatches;
     const playerStatistics = this.state.playerStatistics;
     const teamStatistics = this.state.teamStatistics;
+    const noRankingMessage = 'You have to play 5 matches in last 21 days to be ranked.';
 
     return (
       <div>
@@ -49,9 +50,9 @@ export class Home extends Component {
           </div>
           <div className="col-lg-6">
             <h2>Top Players</h2>
-              <PlayerStatistics statistics={playerStatistics} />
+              <PlayerStatistics statistics={playerStatistics} noRankingMessage={noRankingMessage} />
             <h2>Top Teams</h2>
-              <TeamStatistics statistics={teamStatistics} />
+              <TeamStatistics statistics={teamStatistics} noRankingMessage={noRankingMessage} />
           </div>
         </div>
       </div>
