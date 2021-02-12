@@ -1,0 +1,19 @@
+$positionIconSize: 35px;
+
+.stats-item__position {
+  margin-right: 20px;
+
+  span {
+    color: #ffffff;
+    width: $positionIconSize;
+    height: $positionIconSize;
+    background: #729096;
+    border-radius: 5px;
+    display: block;
+    font-weight: bold;
+    font-size: 30px;
+    line-height: 30px;
+    padding: 0;
+    text-align: center;
+  }
+}
