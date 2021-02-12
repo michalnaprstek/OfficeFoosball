@@ -168,6 +168,7 @@ export class InsertMatch extends Component {
     validate = (matchData) =>
         matchData.yellowTeam &&
         matchData.redTeam &&
+        matchData.yellowTeam.id !== matchData.redTeam.id &&
         (
             (matchData.redScore === 10 && (matchData.yellowScore || matchData.yellowScore === 0)) ||
             (matchData.yellowScore === 10 && (matchData.redScore || matchData.redScore === 0))

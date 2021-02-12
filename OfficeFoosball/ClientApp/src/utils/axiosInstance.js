@@ -12,7 +12,7 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use(request => requestHandler(request));
 axiosInstance.interceptors.response.use(
-  response => response,
+  response => responseHandler(response),
   error => errorHandler(error));
 
 const requestHandler = request => {
@@ -49,8 +49,10 @@ const errorHandler = async (error) =>  {
     goTo('/login');
     return Promise.reject(error);
   }
-  Promise.reject(error);
+  return Promise.reject(error);
 };
+
+const responseHandler = response => response;
 
 const goTo = (path) => {
   window.location.href = path;
