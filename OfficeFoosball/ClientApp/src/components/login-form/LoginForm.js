@@ -8,7 +8,7 @@ export default class LoginForm extends Component {
   state = {
     username: '',
     password: '',
-    success: true
+    failed: false
   };
 
   handleSubmit = async event => {
@@ -18,7 +18,7 @@ export default class LoginForm extends Component {
       await auth.login(this.state.username, this.state.password);
       this.props.history.push('/');
     } catch(error) {
-      this.setState({success : false});
+      this.setState({failed : true});
       console.log(error);
     }
   };
@@ -29,7 +29,7 @@ export default class LoginForm extends Component {
         <form className="auth__form" onSubmit={this.handleSubmit}>
           <h4 className="mb-3 text-center">Login to your account</h4>
           {
-            this.state.success ? null : <div className="auth__error-message">Login failed.</div>
+            this.state.failed ? <div className="auth__error-message">Login failed.</div> : null
           }
           <div className="form-group">
             <input
@@ -38,7 +38,7 @@ export default class LoginForm extends Component {
               name="username"
               value={this.state.username}
               onChange={event =>
-                this.setState({ username: event.target.value })
+                this.setState({ username: event.target.value, failed: false })
               }
               placeholder="Username"
               required
@@ -51,7 +51,7 @@ export default class LoginForm extends Component {
               name="password"
               value={this.state.password}
               onChange={event =>
-                this.setState({ password: event.target.value })
+                this.setState({ password: event.target.value, failed: false })
               }
               placeholder="Password"
               required

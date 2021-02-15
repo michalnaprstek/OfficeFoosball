@@ -38,7 +38,7 @@ const errorHandler = async (error) =>  {
     goTo('/');
     return Promise.reject(error);
   }
-  if((error.response.status === 401) && !originalRequest._retry){
+  if((error.response.status === 401) && !originalRequest.url.endsWith('/login') && !originalRequest._retry){
     originalRequest._retry = true;
     const refreshResult = await auth.refreshToken();
     if(refreshResult.success){

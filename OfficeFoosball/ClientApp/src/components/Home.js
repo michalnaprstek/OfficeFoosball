@@ -17,19 +17,19 @@ export class Home extends Component {
     }
   }
 
-  componentDidMount = () => {
-    axiosInstance.get('match/today')
-      .then(response => response.data)
-      .then(data => this.setState({ todayMatches: data }))
-      axiosInstance.get('match/previousday')
-        .then(response => response.data)
-        .then(data => this.setState({ previousDayMatches: data }))
-      axiosInstance.get('stats/team-success-rates')
-          .then(response => response.data)
-          .then(data => this.setState({ teamStatistics: data }))
-          axiosInstance.get('stats/player-success-rates')
-              .then(response => response.data)
-              .then(data => this.setState({ playerStatistics: data }))
+  componentDidMount = async () => {
+    const todayMatches = (await axiosInstance.get('match/today')).data;
+    const previousDayMatches = (await axiosInstance.get('match/previousday')).data;
+    const teamsStats = (await axiosInstance.get('stats/team-success-rates')).data;
+    const playerStats = (await axiosInstance.get('stats/player-success-rates')).data;
+    const usersToApprove = (await axiosInstance.get('user/not-approved')).data;
+
+    this.setState({
+      todayMatches: todayMatches,
+      previousDayMatches: previousDayMatches,
+      teamStatistics: teamsStats,
+      playerStatistics: playerStats
+    });
   }
 
   render () {
