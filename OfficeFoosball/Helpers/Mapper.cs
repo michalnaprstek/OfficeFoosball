@@ -19,7 +19,7 @@ namespace OfficeFoosball.Helpers
         public static Models.Match Map(DAL.Entities.Match match)
             => new Models.Match(match.Id, match.TeamYellow, match.TeamRed, match.TeamYellowScore, match.TeamRedScore, match.Note);
         public static DAL.Entities.Match Map(Models.Match match)
-            => new DAL.Entities.Match(match.Id, match.YellowTeamId, match.RedTeamId, match.YellowScore, match.RedScore, match.Note);
+            => new DAL.Entities.Match(match.Id, match.Team1Id, match.Team2Id, match.Team1Score, match.Team2Score, match.Note);
 
         public static Models.User Map(DAL.Entities.User user)
             => new User { Name = user.UserName, Id = user.Id, Email = user.Email, IsApproved = user.IsApproved };

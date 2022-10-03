@@ -1,140 +1,131 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
 import axiosInstance from '../../utils/axiosInstance';
 import Select from 'react-select'
+import { useNavigate } from 'react-router-dom';
 
-export default class AddTeam extends Component {
-    constructor(props) {
-        super(props);
+const AddTeam = () => {
+    const navigate = useNavigate();
 
-        this.state = {
-            players: [],
-            teamName: '',
-            teamId: '',
-            player1Id: undefined,
-            player2Id: undefined,
-            error: ''
-        };
-    }
+    const [players, setPlayers] = useState([]);
+    const [teamName, setTeamName] = useState('');
+    const [teamId, setTeamId] = useState('');
+    const [player1Id, setPlayer1Id] = useState(undefined);
+    const [player2Id, setPlayer2Id] = useState(undefined);
+    const [error, setError] = useState('');
 
-    componentDidMount = async () => {
-        await this.loadPlayers();
-    }
-
-    loadPlayers = async () => {
+    const loadPlayers = async () => {
         const response = await axiosInstance.get('Player');
-        if(response.status === 200){
-            this.setState({ players: response.data })
+        if (response.status === 200) {
+            setPlayers(response.data);
         }
     }
 
-    validate = (team) => {
-        if(!team.name) return { ok: false, errorMessage: 'Please give us your original team name.'};
-        if(!team.player1Id) return { ok: false, errorMessage: `Please select first player of ${team.name}.`};
-        if(!team.player2Id) return { ok: false, errorMessage: `Did you know that optimal number of players in foosball team is 2? Please select second player of ${team.name}`};
+    useEffect(() => {
+        loadPlayers();
+    }, []);
+
+    const validate = (team) => {
+        if (!team.name) return { ok: false, errorMessage: 'Please give us your original team name.' };
+        if (!team.player1Id) return { ok: false, errorMessage: `Please select first player of ${team.name}.` };
+        if (!team.player2Id) return { ok: false, errorMessage: `Did you know that optimal number of players in foosball team is 2? Please select second player of ${team.name}` };
         return { ok: true };
     }
 
-    getTeam = () => {
+    const getTeam = () => {
         return {
-            name: this.state.teamName,
-            player1Id: this.state.player1Id,
-            player2Id: this.state.player2Id
+            name: teamName,
+            player1Id: player1Id,
+            player2Id: player2Id
         };
     }
 
-    submitHandler = async (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
 
-        const team = this.getTeam();
+        const team = getTeam();
 
-        const validationResult = this.validate(team);
+        const validationResult = validate(team);
         if (!validationResult.ok) {
-            this.setState({ error: validationResult.errorMessage });
+            setError(validationResult.errorMessage);
             return;
         }
 
-        const response = await axiosInstance.post('Team', team, { headers: { 'Content-Type': 'application/json' }});
-        if(response.status === 201){
-            this.props.history.push('/');
+        const response = await axiosInstance.post('Team', team, { headers: { 'Content-Type': 'application/json' } });
+        if (response.status === 201) {
+            navigate('/');
             return;
         }
 
-        this.setState({ error: response.error })
+        setError(response.error);
     }
 
-    changeNameHandler = (event) => {
-        this.setState({ teamName: event.target.value });
+    const changeNameHandler = (event) => {
+        setTeamName(event.target.value);
     }
 
-    changeIdHandler = (event) => {
+    const changeIdHandler = (event) => {
         if (isNaN(event.target.value)) {
             return;
         }
 
-        this.setState({ teamId: event.target.value });
+        setTeamId(event.target.value);
     }
 
-    handleChangePlayer1 = (selectedOption) => {
-        const playerId = selectedOption.value;
-
-        this.setState({
-            player1Id: playerId,
-        });
+    const handleChangePlayer1 = (selectedOption) => {
+        setPlayer1Id(selectedOption.value);
     }
 
-    handleChangePlayer2 = (selectedOption) => {
-        const playerId = selectedOption.value;
-
-        this.setState({
-            player2Id: playerId,
-        });
+    const handleChangePlayer2 = (selectedOption) => {
+        setPlayer2Id(selectedOption.value);
     }
 
-    getFilteredPlayerOptions = (playerId) => this.state.players
+    const getFilteredPlayerOptions = (playerId) => players
         .filter(player => player.id !== playerId)
         .map(player => ({ value: player.id, label: player.name }));
 
-    render() {
-        const customStyles = {
-            menu: (provided, state) => ({
-              ...provided,
-              color: '#000000',
-            })
-          }
 
-        const errorMessage = this.state.error;
-        const player1Options = this.getFilteredPlayerOptions(this.state.player2Id);
-        const player2Options = this.getFilteredPlayerOptions(this.state.player1Id);
-
-        return (
-            <form onSubmit={this.submitHandler}>
-                <h1>Add new team</h1>
-                {errorMessage &&
-                    <div>
-                        <span className="error">{errorMessage}</span>
-                    </div>
-                }
-                <input  className="form-input"
-                        type='text'
-                        name='teamname'
-                        placeholder="Team name"
-                        onChange={this.changeNameHandler}/>
-                <Select
-                    onChange={this.handleChangePlayer1}
-                    options={player1Options}
-                    placeholder="Player 1"
-                    className="form-input"
-                    styles={customStyles}
-                />
-                <Select
-                    onChange={this.handleChangePlayer2}
-                    options={player2Options}
-                    placeholder="Player 2"
-                    className="form-input"
-                    styles={customStyles}
-                />
-                <input className="btn btn-primary" type='submit' value='Add' />
-            </form>
-        );
+    const customStyles = {
+        menu: (provided, state) => ({
+            ...provided,
+            color: '#000000',
+        })
     }
+
+    const errorMessage = error;
+    const player1Options = getFilteredPlayerOptions(player2Id);
+    const player2Options = getFilteredPlayerOptions(player1Id);
+
+    return (
+        <form onSubmit={submitHandler}>
+            <h1>Add new team</h1>
+            {errorMessage &&
+                <div>
+                    <span className="error">{errorMessage}</span>
+                </div>
+            }
+            <input className="form-input"
+                type='text'
+                name='teamname'
+                placeholder="Team name"
+                onChange={changeNameHandler} />
+            <Select
+                onChange={handleChangePlayer1}
+                options={player1Options}
+                placeholder="Player 1"
+                className="form-input"
+                styles={customStyles}
+            />
+            <Select
+                onChange={handleChangePlayer2}
+                options={player2Options}
+                placeholder="Player 2"
+                className="form-input"
+                styles={customStyles}
+            />
+            <input className="btn btn-primary" type='submit' value='Add' />
+        </form>
+    );
+
 }
+
+export default AddTeam;

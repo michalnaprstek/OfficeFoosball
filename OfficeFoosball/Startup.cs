@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Logging;
 using OfficeFoosball.DAL;
 using OfficeFoosball.Extensions;
+using OfficeFoosball.Fakes;
 using OfficeFoosball.Security;
 
 namespace OfficeFoosball
@@ -40,7 +41,7 @@ namespace OfficeFoosball
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, IDataStoreInitializer dataStoreInitializer)
         {
             if (env.IsDevelopment())
             {
@@ -53,7 +54,10 @@ namespace OfficeFoosball
                 app.UseHsts();
             }
 
-            
+            if (env.IsDevelopment())
+            {
+                dataStoreInitializer.Init();
+            }
 
             app.UseHttpsRedirection();
             app.UseStaticFiles();

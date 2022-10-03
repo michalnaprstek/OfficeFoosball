@@ -1,260 +1,297 @@
-import React, { Component } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TeamSelector from '../team-selector/TeamSelector'
 import './InsertMatch.scss';
 import ScoreInput from '../score-input/ScoreInput';
 import axiosInstance from '../../utils/axiosInstance';
+import { useNavigate } from 'react-router-dom';
 
-export class InsertMatch extends Component {
+const InsertMatch = () => {
+    const navigate = useNavigate();
+    const [players, setPlayers] = useState([]);
+    const [teams, setTeams] = useState([]);
+    const [errorMessage, setErrorMessage] = useState('');
+    const [team1, setTeam1] = useState(undefined);
+    const [team1Score, setTeam1Score] = useState(0);
+    const [team1Player1, setTeam1Player1] = useState(undefined);
+    const [team1Player2, setTeam1Player2] = useState(undefined);
+    const [team1Mates, setTeam1Mates] = useState([]);
+    const [team1PossibleTeams, setTeam1PossibleTeams] = useState([]);
+    const [team2Player1, setTeam2Player1] = useState(undefined);
+    const [team2Player2, setTeam2Player2] = useState(undefined);
+    const [team2Mates, setTeam2Mates] = useState([]);
+    const [team2PossibleTeams, setTeam2PossibleTeams] = useState([]);
+    const [team2Score, setTeam2Score] = useState(0);
+    const [team2, setTeam2] = useState(undefined);
+    const [note, setNote] = useState('');
 
-    constructor(props) {
-        super(props);
-        this.state = { players: [], teams: [], errorMessage: '', yellowScore: 0, redScore: 0 };
+    const loadPlayers = async () => {
+        const response = await axiosInstance.get('Player/');
+        if (response.status === 200) {
+            setPlayers(response.data);
+        }
+    };
 
-        axiosInstance.get('Player/')
-            .then(response => response.data)
-            .then(data => {
-                this.setState({ players: data });
-            });
-
-        axiosInstance.get('Team/')
-            .then(response => response.data)
-            .then(data => {
-                this.setState({ teams: data });
-            });
+    const loadTeams = async () => {
+        const response = await axiosInstance.get('Team/');
+        if (response.status === 200) {
+            setTeams(response.data);
+            setTeam1PossibleTeams(response.data);
+            setTeam2PossibleTeams(response.data);
+        }
     }
 
-    displayError(errorMessage){
-        this.setState({errorMessage: errorMessage});
+    useEffect(() => {
+        loadPlayers();
+        loadTeams();
+    }, []);
+
+    const displayError = (errorMessage) => {
+        setErrorMessage(errorMessage);
     }
 
-    getPlayer = (id) =>
-        this.state.players ? this.state.players.find(p => p.id === id) : null;
+    const getPlayer = (id) =>
+        players ? players.find(p => p.id === id) : null;
 
-    isPlayerInTeam = (team, player) =>
+    const isPlayerInTeam = (team, player) =>
         player && team.playerIds.some(x => x === player.id);
 
-    getPossibleTeamMates = (player) => {
-        const players = this.state.players;
-        const teams = this.state.teams;
+    const getPossibleTeamMates = (player) => {
         if (!player)
             return players ? players : [];
 
         let mates = [];
 
-        this.getPossibleTeams(player, teams)
-            .forEach(team => mates.push(this.getSecondPlayer(team, player, players)));
+        getPossibleTeams(player, teams)
+            .forEach(team => mates.push(getSecondPlayer(team, player, players)));
 
         return mates
     }
 
-    getSecondPlayerId = (team, player) => team.player1.id === player.id
+    const getSecondPlayerId = (team, player) => team.player1.id === player.id
         ? team.player2.id
         : team.player1.id;
 
-    getSecondPlayer = (team, player, players) => players
-        ? players.find(p => p.id === this.getSecondPlayerId(team, player))
+    const getSecondPlayer = (team, player, players) => players
+        ? players.find(p => p.id === getSecondPlayerId(team, player))
         : null;
 
 
 
-    getPossibleTeams = (player, teams) => {
+    const getPossibleTeams = (player, teams) => {
         if (!player)
             return teams ? teams : [];
 
         return teams
-            .filter(x => this.isPlayerInTeam(x, player));
+            .filter(x => isPlayerInTeam(x, player));
     }
 
-    getTeam = (player1, player2, teams) => {
+    const getTeam = (player1, player2, teams) => {
         if (!player1 || !player2)
             return teams;
 
         return teams
-            .find(x => this.isPlayerInTeam(x, player1) && this.isPlayerInTeam(x, player2));
+            .find(x => isPlayerInTeam(x, player1) && isPlayerInTeam(x, player2));
     }
 
-    player1Change = (player, name) => {
+    const team1Player1Change = (player) => {
         const possibleTeams = player
-            ? this.state.teams.filter(t => this.isPlayerInTeam(t, player))
-            : this.state.teams;
+            ? teams.filter(t => isPlayerInTeam(t, player))
+            : teams;
 
         const team = possibleTeams && possibleTeams.length === 1
             ? possibleTeams[0]
             : null;
 
 
-        const mates = this.getPossibleTeamMates(player);
+        const mates = getPossibleTeamMates(player);
 
         const player2 = mates && mates.length === 1
             ? mates[0]
             : null;
 
-        this.setState({
-            [name + 'Player1']: player,
-            [name + 'TeamMates']: mates,
-            [name + 'Player2']: player2,
-            [name + 'Team']: team,
-            [name + 'PossibleTeams']: possibleTeams,
-        });
+        setTeam1(team);
+        setTeam1Player1(player);
+        setTeam1Player2(player2);
+        setTeam1Mates(mates);
+        setTeam1PossibleTeams(possibleTeams);
     }
 
-    player2Change = (player, name) => {
-        if (this.state[name + 'Player1']) {
-            const team = this.getTeam(this.state[name + 'Player1'], player, this.state.teams)
-            this.setState({
-                [name + 'Player2']: player,
-                [name + 'Team']: team,
-                [name + 'PossibleTeams']: this.state.teams,
-            });
-        } else
-            this.setState({
-                [name + 'Player2']: player,
-                [name + 'PossibleTeams']: this.state.teams,
-            });
+    const team2Player1Change = (player) => {
+        const possibleTeams = player
+            ? teams.filter(t => isPlayerInTeam(t, player))
+            : teams;
+
+        const team = possibleTeams && possibleTeams.length === 1
+            ? possibleTeams[0]
+            : null;
+
+
+        const mates = getPossibleTeamMates(player);
+
+        const player2 = mates && mates.length === 1
+            ? mates[0]
+            : null;
+
+        setTeam2(team);
+        setTeam2Player1(player);
+        setTeam2Player2(player2);
+        setTeam2Mates(mates);
+        setTeam2PossibleTeams(possibleTeams);
     }
 
-    teamChange = (team, name) => {
-        const player1 = team ? this.getPlayer(team.player1.id) : null;
-        const player2 = team ? this.getPlayer(team.player2.id) : null;
-        this.setState({
-            [name + 'Team']: team,
-            [name + 'Player1']: player1,
-            [name + 'TeamMates']: this.getPossibleTeamMates(player1),
-            [name + 'Player2']: player2,
-            [name + 'PossibleTeams']: this.state.teams,
-        });
-    }
-
-    scoreChange = (score, name) => {
-        if (score !== 1 && score < 10) {
-            var otherScore = name === 'red' ? 'yellow' : 'red';
-            this.setState({ [name + 'Score']: score, [otherScore + 'Score']: 10 });
-            return;
+    const team1Player2Change = (player) => {
+        setTeam1Player2(player);
+        setTeam1PossibleTeams(teams);
+        if (team1Player1) {
+            const team = getTeam(team1Player1, player, teams);
+            setTeam1(team);
         }
-        this.setState({ [name + 'Score']: score });
     }
 
-    noteChange = (event) => {
-        this.setState({ note: event.target.value });
+    const team2Player2Change = (player) => {
+        setTeam2Player2(player);
+        setTeam2PossibleTeams(teams);
+        if (team2Player1) {
+            const team = getTeam(team2Player1, player, teams);
+            setTeam2(team);
+        }
     }
 
-    save = async () => {
+    const team1Change = (team) => {
+        const player1 = team ? getPlayer(team.player1.id) : null;
+        const player2 = team ? getPlayer(team.player2.id) : null;
+
+
+        setTeam1(team);
+        setTeam1Player1(player1);
+        setTeam1Player2(player2);
+        setTeam1Mates(getPossibleTeamMates(player1));
+        setTeam1PossibleTeams(teams);
+    }
+
+    const team2Change = (team) => {
+        const player1 = team ? getPlayer(team.player1.id) : null;
+        const player2 = team ? getPlayer(team.player2.id) : null;
+
+
+        setTeam2(team);
+        setTeam2Player1(player1);
+        setTeam2Player2(player2);
+        setTeam2Mates(getPossibleTeamMates(player1));
+        setTeam2PossibleTeams(teams);
+    }
+
+    const team1ScoreChange = (score) => {
+        setTeam1Score(score);
+        (score !== 1 && score < 10) && setTeam2Score(10);
+    }
+
+    const team2ScoreChange = (score) => {
+        setTeam2Score(score);
+        (score !== 1 && score < 10) && setTeam1Score(10);
+    }
+
+    const noteChange = (event) => {
+        setNote(event.target.value);
+    }
+
+    const save = async () => {
 
         var match = {
-            yellowTeamId: this.state.yellowTeam.id,
-            yellowTeam: this.state.yellowTeam,
-            yellowScore: this.state.yellowScore,
-            redTeamId: this.state.redTeam.id,
-            redTeam: this.state.redTeam,
-            redScore: this.state.redScore,
-            note: this.state.note
+            team1Id: team1.id,
+            team1: team1,
+            team1Score: team1Score,
+            team2Id: team2.id,
+            team2: team2,
+            team2Score: team2Score,
+            note: note
         };
 
-        if(!this.validate(match))
+        if (!validate(match))
             return;
 
         const response = await axiosInstance
-            .post('match', match, { headers: { 'Content-Type': 'application/json' }});
+            .post('match', match, { headers: { 'Content-Type': 'application/json' } });
 
-        if(response.status === 201){
-            this.props.history.push('/');
+        if (response.status === 201) {
+            navigate('/')
             return;
         }
 
-        this.displayError(response.errorMessage);
+        displayError(response.errorMessage);
     }
 
-    validate = (matchData) =>
-        matchData.yellowTeam &&
-        matchData.redTeam &&
-        matchData.yellowTeam.id !== matchData.redTeam.id &&
+    const validate = (matchData) =>
+        matchData.team1 &&
+        matchData.team2 &&
+        matchData.team1.id !== matchData.team2.id &&
         (
-            (matchData.redScore === 10 && (matchData.yellowScore || matchData.yellowScore === 0)) ||
-            (matchData.yellowScore === 10 && (matchData.redScore || matchData.redScore === 0))
+            (matchData.team2Score === 10 && (matchData.team1Score || matchData.team1Score === 0)) ||
+            (matchData.team1Score === 10 && (matchData.team2Score || matchData.team2Score === 0))
         ) &&
-        matchData.redScore !== matchData.yellowScore;
+        matchData.team2 !== matchData.team1;
 
-    render() {
-        const players = this.state.players;
+    const isDisabled = !validate({ team1, team2, team1Score, team2Score, note });
 
-        const yellowPlayer1 = this.state.yellowPlayer1;
-        const yellowPlayer2 = this.state.yellowPlayer2;
-        const yellowTeam = this.state.yellowTeam;
-        const yellowTeamMates = this.state.yellowTeamMates;
-        const yellowPossibleTeams = this.state.yellowPossibleTeams ? this.state.yellowPossibleTeams : this.state.teams;
-        const yellowScore = this.state.yellowScore || this.state.yellowScore === 0 ? this.state.yellowScore : '';
+    return (
+        <div className="insert-match">
+            <section className="insert-match__teams">
+                <div className="yellow row insert-match__team">
 
-        const redPlayer1 = this.state.redPlayer1;
-        const redPlayer2 = this.state.redPlayer2;
-        const redTeam = this.state.redTeam;
-        const redTeamMates = this.state.redTeamMates;
-        const redPossibleTeams = this.state.redPossibleTeams ? this.state.redPossibleTeams : this.state.teams;
-        const redScore = this.state.redScore || this.state.redScore === 0 ? this.state.redScore : '';
-
-        const note = this.state.note;
-
-        const isDisabled = !this.validate({yellowTeam, redTeam, yellowScore, redScore, note});
-
-        const errorMessage = this.state.errorMessage;
-
-        return (
-            <div className="insert-match">
-                <section className="insert-match__teams">
-                    <div className="yellow row insert-match__team">
-                        
                     <div className="insert-match__team-wrapper">
-                        <span className="insert-match__team-name">Yellow team</span>
+                        <span className="insert-match__team-name">Team 1</span>
                         <TeamSelector
-                            teamName="Yellow team"
-                            name="yellow"
-                            possibleTeams={yellowPossibleTeams}
-                            team={yellowTeam}
+                            teamName="Team 1"
+                            name="team1"
+                            possibleTeams={team1PossibleTeams}
+                            team={team1}
                             players={players}
-                            player1={yellowPlayer1}
-                            teamMates={yellowTeamMates}
-                            player2={yellowPlayer2}
-                            onPlayer1Change={this.player1Change}
-                            onPlayer2Change={this.player2Change}
-                            onTeamChange={this.teamChange} />
+                            player1={team1Player1}
+                            teamMates={team1Mates}
+                            player2={team1Player2}
+                            onPlayer1Change={team1Player1Change}
+                            onPlayer2Change={team1Player2Change}
+                            onTeamChange={team1Change} />
 
-                            <ScoreInput name='yellow' change={this.scoreChange} value={yellowScore} />
-                        </div>
-                    </div>
-
-                    <div className="red row insert-match__team">
-                        <div className="insert-match__team-wrapper">
-                            <span className="insert-match__team-name">Red team</span>
-                            <TeamSelector
-                                teamName="Red team"
-                                name="red"
-                                possibleTeams={redPossibleTeams}
-                                team={redTeam}
-                                players={players}
-                                player1={redPlayer1}
-                                teamMates={redTeamMates}
-                                player2={redPlayer2}
-                                onPlayer1Change={this.player1Change}
-                                onPlayer2Change={this.player2Change}
-                                onTeamChange={this.teamChange} />
-                            <ScoreInput name='red' change={this.scoreChange} value={redScore} />
-                        </div>
-                    </div>
-                </section>
-                <div className="insert-match__note">
-
-                    <div className="note">
-                        <label htmlFor="note">Note</label>
-                        <div>
-                            <textarea name="note" tabIndex="3" onChange={this.noteChange} />
-                        </div>
+                        <ScoreInput name='team1' change={team1ScoreChange} value={team1Score} />
                     </div>
                 </div>
-                <span className="error">{errorMessage}</span>
-                <section className="insert-match__buttons">
-                    <button className="btn btn-primary " tabIndex="4" disabled={isDisabled} onClick={this.save}>Save</button>
-                </section>
+
+                <div className="red row insert-match__team">
+                    <div className="insert-match__team-wrapper">
+                        <span className="insert-match__team-name">Team 2</span>
+                        <TeamSelector
+                            teamName="Team 2"
+                            name="team2"
+                            possibleTeams={team2PossibleTeams}
+                            team={team2}
+                            players={players}
+                            player1={team2Player1}
+                            teamMates={team2Mates}
+                            player2={team2Player2}
+                            onPlayer1Change={team2Player1Change}
+                            onPlayer2Change={team2Player2Change}
+                            onTeamChange={team2Change} />
+                        <ScoreInput name='team2' change={team2ScoreChange} value={team2Score} />
+                    </div>
+                </div>
+            </section>
+            <div className="insert-match__note">
+
+                <div className="note">
+                    <label htmlFor="note">Note</label>
+                    <div>
+                        <textarea name="note" tabIndex="3" onChange={noteChange} />
+                    </div>
+                </div>
             </div>
-        );
-    }
+            <span className="error">{errorMessage}</span>
+            <section className="insert-match__buttons">
+                <button className="btn btn-primary " tabIndex="4" disabled={isDisabled} onClick={save}>Save</button>
+            </section>
+        </div>
+    );
 }
+
+export default InsertMatch;

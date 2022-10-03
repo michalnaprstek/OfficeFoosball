@@ -5,13 +5,11 @@ import Auth from '../../utils/auth/auth'
 
 const LogoutNavItem = ({ onLogout }) => {
     const navigate = useNavigate();
+    const auth = new Auth();
     const logout = () => {
-        const logoutCallback = this.props.onLogout;
-        Auth.logout();
+        auth.logout();
         navigate('/login');
-        logoutCallback();
-        // this.props.history.push('/login')
-        // if (logoutCallback) logoutCallback();
+        onLogout();
     };
 
     return (

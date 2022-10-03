@@ -6,24 +6,24 @@
         {
         }
 
-        public Match(int id, int yellowTeamId, int redTeamId, int yellowScore, int redScore, string note)
+        public Match(int id, int team1Id, int team2Id, int team1Score, int team2Score, string note)
         {
             Id = id;
-            YellowTeamId = yellowTeamId;
-            RedTeamId = redTeamId;
-            YellowScore = yellowScore;
-            RedScore = redScore;
+            Team1Id = team1Id;
+            Team2Id = team2Id;
+            Team1Score = team1Score;
+            Team2Score = team2Score;
             Note = note;
         }
 
         public int Id { get; }
-        public int YellowTeamId { get; set; }
-        public int RedTeamId { get; set; }
-        public int YellowScore { get; set; }
-        public int RedScore { get; set; }
+        public int Team1Id { get; set; }
+        public int Team2Id { get; set; }
+        public int Team1Score { get; set; }
+        public int Team2Score { get; set; }
         public string Note { get; set; }
-        public int WinnerTeamId => YellowScore > RedScore
-            ? YellowTeamId
-            : RedTeamId;
+        public int WinnerTeamId => Team1Score > Team2Score
+            ? Team1Id
+            : Team2Id;
     }
 }

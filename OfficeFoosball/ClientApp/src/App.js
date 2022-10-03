@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
-import { InsertMatch } from './components/insert-match/InsertMatch';
+import InsertMatch from './components/insert-match/InsertMatch';
 import MatchDetail from './components/match-detail/MatchDetail';
 import LoginForm from './components/login-form/LoginForm';
 import RegisterForm from './components/register-form/RegisterForm';

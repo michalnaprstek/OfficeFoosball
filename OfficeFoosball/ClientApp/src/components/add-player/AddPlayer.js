@@ -1,92 +1,85 @@
-﻿import React, { Component } from 'react';
+﻿import React, { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axiosInstance from '../../utils/axiosInstance';
-//import Select from 'react-select'
 
-export default class AddPlayer extends Component {
-    constructor(props) {
-        super(props);
+const AddPlayer = () => {
+    const navigate = useNavigate();
+    const [nick, setNick] = useState('');
+    const [userId, setUserId] = useState(undefined);
+    const [message, setMessage] = useState('');
 
-        this.state = {
-            nick: '',
-            userId: undefined,
-            message: '',
-            //users: []
-        };
+    // const loadUsers = async () => {
+    //     const response = axiosInstance.get('User');
+    //     if (response.status === 200) {
+    //         setUsers(response.data);
+    //     }
+    // }
 
-    }
+    // useEffect(() => {
+    //   loadUsers()
+    // }, []);
 
-    componentDidMount = async () => {
-        //await this.loadUsers();
-    }
-
-    loadUsers = async () => {
-        const response = axiosInstance.get('User');
-        if(response.status === 200){
-            this.setState({ users: response.data });
-        }
-    }
-
-    validate = (player) => {
-        if(!player.name) return { ok: false, errorMessage: 'Please, let us know name of the lady.' };
+    const validate = (player) => {
+        if (!player.name) return { ok: false, errorMessage: 'Please, let us know name of the lady.' };
         return { ok: true }
     }
 
-    getPlayer = () => ({
-        name: this.state.nick,
-        userId: this.state.userId
+    const getPlayer = () => ({
+        name: nick,
+        userId: userId
     })
 
-    submitHandler = async (event) => {
+    const submitHandler = async (event) => {
         event.preventDefault();
 
-        const player = this.getPlayer();
-        const validationResult = this.validate(player);
+        const player = getPlayer();
+        const validationResult = validate(player);
         if (!validationResult.ok) {
-            this.setState({message: validationResult.errorMessage});
+            setMessage(validationResult.errorMessage);
             return;
         }
 
-        var response = await axiosInstance.post('Player', player, {headers: { 'Content-Type': 'application/json' }});
-        if(response.status === 201){
-            this.props.history.push('/');
+        var response = await axiosInstance.post('Player', player, { headers: { 'Content-Type': 'application/json' } });
+        if (response.status === 201) {
+            navigate('/');
             return;
         }
 
-        this.setState({ error: response.error });
+        setMessage(response.error);
     }
 
-    changeNameHandler = (event) => {
-        this.setState({ nick: event.target.value });
+    const changeNameHandler = (event) => {
+        setNick(event.target.value);
     }
 
-    handleUserChange = (userOption) => {
-        this.setState({ userId: userOption.id});
+    const handleUserChange = (userOption) => {
+        setUserId(userOption.id);
     }
 
-    render() {
-        // const users = this.state.users;
-        // const userOptions = users ? users.map(player => ({ value: player.id, label: player.name })) : [];
+    // const users = users;
+    // const userOptions = users ? users.map(player => ({ value: player.id, label: player.name })) : [];
 
-        return (
-            <form onSubmit={this.submitHandler}>
-                <h1>Add new player</h1>
-                <div>
+    return (
+        <form onSubmit={submitHandler}>
+            <h1>Add new player</h1>
+            <div>
                 <input
                     className="form-input"
                     type='text'
                     name='playerName'
                     placeholder='Name'
-                    onChange={this.changeNameHandler}
-                    />
-                </div>
-                {/* <Select 
+                    onChange={changeNameHandler}
+                />
+            </div>
+            {/* <Select 
                     className="form-input"
                     options={userOptions}
-                    onChange={this.handleUserChange}
+                    onChange={handleUserChange}
                     placeholder='Link to user..'
                      /> */}
-                <input className="btn btn-primary" type='submit' value='Add' />
-            </form>
-        );
-    }
+            <input className="btn btn-primary" type='submit' value='Add' />
+        </form>
+    );
 }
+
+export default AddPlayer;
