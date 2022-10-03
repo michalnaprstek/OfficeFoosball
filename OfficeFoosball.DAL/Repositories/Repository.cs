@@ -14,8 +14,8 @@ namespace OfficeFoosball.DAL.Repositories
             DbSet = dbSet;
         }
 
-        public virtual Task<T> GetAsync(int id)
-            => DbSet.FindAsync(id);
+        public virtual async Task<T> GetAsync(int id)
+            => await DbSet.FindAsync(id);
 
 
         public async virtual Task<IReadOnlyList<T>> GetAsync()
