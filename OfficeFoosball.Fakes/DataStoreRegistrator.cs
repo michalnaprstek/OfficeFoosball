@@ -8,7 +8,7 @@ namespace OfficeFoosball.Fakes
         public static IServiceCollection RegisterFake(IServiceCollection services)
         {
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
-            services.AddScoped<IDataStoreInitializer, DataStoreInitializer>();
+            services.AddSingleton<IDataStoreInitializer, DataStoreInitializer>();
             return services;
         }
     }

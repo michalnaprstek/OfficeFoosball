@@ -1,19 +1,21 @@
 import React from 'react';
 import {
   Route,
-  Redirect
+  Navigate,
+  Routes
 } from 'react-router-dom';
 
 
 function PrivateRoute({ component: Component, canActivate, ...rest }) {
-    return (
+  return (
+    <Routes>
       <Route
         {...rest}
         render={props =>
-            canActivate() ? (
+          canActivate() ? (
             <Component {...props} />
           ) : (
-            <Redirect
+            <Navigate
               to={{
                 pathname: '/login',
                 state: { from: props.location }
@@ -22,7 +24,8 @@ function PrivateRoute({ component: Component, canActivate, ...rest }) {
           )
         }
       />
-    );
-  }
+    </Routes>
+  );
+}
 
-  export default PrivateRoute;
+export default PrivateRoute;

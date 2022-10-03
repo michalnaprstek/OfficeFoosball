@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28307.539
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32922.545
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball", "OfficeFoosball\OfficeFoosball.csproj", "{C889F109-18C5-497E-BD2D-6DEF83C41481}"
 EndProject
@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball.DAL", "Offic
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball.Fakes", "OfficeFoosball.Fakes\OfficeFoosball.Fakes.csproj", "{965DF84E-EC0D-48F8-B331-E725E62D408A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "OfficeFoosball.Security", "OfficeFoosball.Security\OfficeFoosball.Security.csproj", "{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "OfficeFoosball.Security", "OfficeFoosball.Security\OfficeFoosball.Security.csproj", "{DAF1329F-4E1B-46BF-806D-CAF1E27C50E7}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

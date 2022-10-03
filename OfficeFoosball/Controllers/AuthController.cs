@@ -10,7 +10,6 @@ namespace OfficeFoosball.Controllers
     {
         private readonly IAuthenticationService _authenticationService;
 
-        //api/auth/Register
         public AuthController(IAuthenticationService authenticationService)
         {
             _authenticationService = authenticationService;

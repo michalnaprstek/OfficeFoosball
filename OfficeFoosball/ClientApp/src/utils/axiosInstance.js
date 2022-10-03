@@ -23,25 +23,25 @@ const requestHandler = request => {
   return request;
 };
 
-const errorHandler = async (error) =>  {
+const errorHandler = async (error) => {
   const originalRequest = error.config;
   const auth = new Auth();
-  if(!error.response){
+  if (!error.response) {
     return Promise.reject(error);
   }
-  if(error.response.status === 401 && originalRequest.url.endsWith('auth/token')){
+  if (error.response.status === 401 && originalRequest.url.endsWith('auth/token')) {
     auth.logout();
     goTo('/login');
     return Promise.reject(error);
   }
-  if(error.response.status === 403){
+  if (error.response.status === 403) {
     goTo('/');
     return Promise.reject(error);
   }
-  if((error.response.status === 401) && !originalRequest._retry){
+  if ((error.response.status === 401) && !originalRequest._retry) {
     originalRequest._retry = true;
     const refreshResult = await auth.refreshToken();
-    if(refreshResult.success){
+    if (refreshResult.success) {
       originalRequest.headers['Authorization'] = `Bearer ${refreshResult.accessToken}`;
       return axiosInstance(originalRequest);
     }

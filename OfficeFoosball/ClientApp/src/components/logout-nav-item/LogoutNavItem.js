@@ -1,22 +1,24 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { NavItem } from 'reactstrap';
-import { withRouter } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import Auth from '../../utils/auth/auth'
 
-class LogoutNavItem extends Component{
-    auth = new Auth();
-
-    logout = () => {
+const LogoutNavItem = ({ onLogout }) => {
+    const navigate = useNavigate();
+    const logout = () => {
         const logoutCallback = this.props.onLogout;
-        this.auth.logout();
-        this.props.history.push('/login')
-        if(logoutCallback) logoutCallback();
+        Auth.logout();
+        navigate('/login');
+        logoutCallback();
+        // this.props.history.push('/login')
+        // if (logoutCallback) logoutCallback();
     };
 
-    render = () => (
-        <NavItem onClick={this.logout}>
+    return (
+        <NavItem onClick={logout}>
             <span className="nav-link">Logout</span>
         </NavItem>)
+
 }
 
-export default withRouter(LogoutNavItem)
+export default LogoutNavItem

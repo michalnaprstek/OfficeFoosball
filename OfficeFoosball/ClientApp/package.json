@@ -3,29 +3,16 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
-    "jquery": "^3.4.1",
-    "node-sass": "^4.12.0",
-    "react": "^16.0.0",
-    "react-dom": "^16.0.0",
-    "react-router-bootstrap": "^0.24.4",
-    "react-router-dom": "^4.2.2",
-    "react-scripts": "^3.0.1",
-    "react-select": "^3.0.8",
-    "reactstrap": "^6.3.0",
-    "rimraf": "^2.6.2"
-  },
-  "devDependencies": {
-    "ajv": "^6.10.1",
-    "brace": "^0.11.1",
-    "cross-env": "^5.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-react-app": "^2.1.0",
-    "eslint-plugin-flowtype": "^2.50.3",
-    "eslint-plugin-import": "^2.18.0",
-    "eslint-plugin-jsx-a11y": "^5.1.1",
-    "eslint-plugin-react": "^7.14.2"
+    "axios": "^0.27.2",
+    "bootstrap": "^5.2.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.4.1",
+    "react-scripts": "5.0.1",
+    "react-select": "^5.4.0",
+    "reactstrap": "^9.1.4",
+    "sass": "^1.55.0",
+    "web-vitals": "^2.1.4"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -48,5 +35,6 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  }
+  },
+  "proxy": "https://localhost:5001"
 }

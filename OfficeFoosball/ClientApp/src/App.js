@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Route } from 'react-router';
+import { Route, Routes } from 'react-router';
 import { Layout } from './components/Layout';
 import { Home } from './components/Home';
 import { InsertMatch } from './components/insert-match/InsertMatch';
@@ -16,18 +16,21 @@ export default class App extends Component {
   static displayName = App.name;
   auth = new Auth();
 
-  render () {
+  render() {
     const isAuth = this.auth.isAuth();
 
     return (
       <Layout isAuth={isAuth}>
-        <Route path='/login' component={LoginForm} />
-        <Route path='/register' component={RegisterForm} />
-        <PrivateRoute exact path='/' component={Home} canActivate={this.auth.isAuth} />
-        <PrivateRoute path='/insert-match' component={InsertMatch} canActivate={this.auth.isAuth} />
-        <PrivateRoute path='/match-detail/:id' component={MatchDetail} canActivate={this.auth.isAuth} />
-        <PrivateRoute path='/add-player' component={AddPlayer} canActivate={this.auth.isAuth} />
-        <PrivateRoute path='/add-team' component={AddTeam} canActivate={this.auth.isAuth} />
+        <Routes>
+          <Route path='/login' element={<LoginForm />} />
+          <Route path='/register' element={<RegisterForm />} />
+          <Route exact path='/' element={<Home />} />
+
+          {this.auth.isAuth && <Route path='/insert-match' element={<InsertMatch />} />}
+          {this.auth.isAuth && <Route path='/match-detail/:id' element={<MatchDetail />} />}
+          {this.auth.isAuth && <Route path='/add-player' element={<AddPlayer />} />}
+          {this.auth.isAuth && <Route path='/add-team' element={<AddTeam />} />}
+        </Routes>
       </Layout>
     );
   }
